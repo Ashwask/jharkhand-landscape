@@ -159,7 +159,7 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 <div class="card cardpad mtx" id="matrix"></div>
 
 <div class="section-title">Partner directory</div>
-<p class="section-sub">Click a column header to sort. Click a partner's district tag to focus the map.</p>
+<p class="section-sub">All implementing organisations — your source-file partners plus <span style="color:#b07a1f">✳ indicative</span> orgs compiled from public sources (PRADAN, CInI, CEED, Tata Steel Foundation…). Click a column header to sort; click a district tag to focus the map.</p>
 <div class="card tbl" id="dirtbl"></div>
 
 <div class="section-title">Place health — where attention is needed</div>
@@ -173,12 +173,9 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 <p class="section-sub">The full grid: partners, themes, aspirational status (per TRI), TRI presence and latest-year CSR.</p>
 <div class="card tbl" id="distbl"></div>
 
-<div class="section-title">Wider ecosystem — other organisations &amp; funders <span style="color:#b07a1f">✳ indicative</span></div>
-<p class="section-sub">Compiled from public sources (org sites, BRLF, Azim Premji Foundation, Tata Trusts) — <b>not</b> from the source spreadsheets and <b>not</b> folded into the health scores above. District attributions are approximate; treat as leads to verify. See the <b>“External orgs ✳”</b> map lens.</p>
-<div class="grid">
- <div class="card"><h2>Other implementing organisations</h2><div class="tbl" id="extimpl"></div></div>
- <div class="card"><h2>Funders &amp; philanthropies present</h2><div class="tbl" id="extfund"></div></div>
-</div>
+<div class="section-title">Funders &amp; philanthropies present <span style="color:#b07a1f">✳ indicative</span></div>
+<p class="section-sub">Compiled from public sources (BRLF, Azim Premji Foundation, Tata Trusts, EdelGive) — <b>not</b> from the source spreadsheets and <b>not</b> folded into the health scores. Implementing orgs now live in the Partner directory above.</p>
+<div class="card"><div class="tbl" id="extfund"></div></div>
 
 <div class="section-title">Government spend &amp; allocation <span style="color:#8a4fbf">✳ indicative</span></div>
 <p class="section-sub">The largest place-based public money in Jharkhand. <b>DMF (District Mineral Foundation)</b> is district-specific and concentrated in the coal/iron belt — see the <b>“DMF mining fund ✳”</b> map lens. State &amp; central schemes are largely statewide. Figures from public sources (CSE, state budget, press); DMF district split is cumulative to Mar-2018 and total has since grown well beyond ₹12,000 Cr.</p>
@@ -425,19 +422,24 @@ function buildMatrix(){
 }
 
 /* ---------- partner directory ---------- */
-let dirSort={k:'name',asc:true};
+let dirSort={k:'nd',asc:false};
 function buildDir(){
  const box=document.getElementById('dirtbl');
- const cols=[['name','Partner'],['districts','Districts'],['themes','Themes'],['nd','#Dist']];
- let rows=PARTNERS.map(p=>({name:p.name,districts:p.districts,themes:p.themes,nd:p.districts.length}));
- rows.sort((a,b)=>{let x=a[dirSort.k],y=b[dirSort.k];if(Array.isArray(x)){x=x.length;y=y.length;}if(typeof x==='string')return dirSort.asc?x.localeCompare(y):y.localeCompare(x);return dirSort.asc?x-y:y-x;});
+ const cols=[['name','Partner'],['districts','Districts'],['themes','Themes / focus'],['nd','#Dist']];
+ let rows=PARTNERS.map(p=>({name:p.name,districts:p.districts,themes:p.themes,themesN:p.themes.length,nd:p.districts.length,ext:false}));
+ rows=rows.concat(EXT_IMPL.map(o=>{const segs=o.focus.split(' · ');return {name:o.name,districts:o.districts,focus:segs,themesN:segs.length,nd:o.districts.length,ext:true,src:o.src};}));
+ rows.sort((a,b)=>{let k=dirSort.k,x,y;
+   if(k==='themes'){x=a.themesN;y=b.themesN;} else if(k==='districts'){x=a.nd;y=b.nd;} else {x=a[k];y=b[k];}
+   if(typeof x==='string')return dirSort.asc?x.localeCompare(y):y.localeCompare(x);return dirSort.asc?x-y:y-x;});
  let h='<table><thead><tr>';cols.forEach(c=>h+='<th data-k="'+c[0]+'">'+c[1]+(dirSort.k===c[0]?(dirSort.asc?' ▲':' ▼'):'')+'</th>');h+='</tr></thead><tbody>';
- rows.forEach(p=>{h+='<tr><td><b>'+p.name+'</b></td><td>'+
-   (p.districts.length?p.districts.map(d=>'<span class="tag pill" data-d="'+d+'">'+d.replace('-Kharsawan','-K.')+'</span>').join(''):'<span class="mini">—</span>')+
-   '</td><td>'+p.themes.map(t=>'<span class="tag" style="border-left:3px solid '+(themePalette[t]||'#ccc')+'">'+t+'</span>').join('')+
-   '</td><td class="num">'+p.nd+'</td></tr>';});
+ rows.forEach(p=>{
+   const badge=p.ext?' <span class="tag" style="background:#f4efe3;color:#b07a1f;border-color:#e6d9bf" title="Compiled from public sources, not the source spreadsheets">✳ indicative</span>'+(p.src?' <a class="mini" href="'+p.src+'" target="_blank" rel="noopener">↗</a>':''):'';
+   const dcell=p.districts.length?p.districts.map(d=>'<span class="tag pill" data-d="'+d+'">'+d.replace('-Kharsawan','-K.')+'</span>').join(''):'<span class="tag">Statewide</span>';
+   const tcell=p.ext?p.focus.map(t=>'<span class="tag" style="border-left:3px solid #b07a1f">'+t+'</span>').join('')
+                    :p.themes.map(t=>'<span class="tag" style="border-left:3px solid '+(themePalette[t]||'#ccc')+'">'+t+'</span>').join('');
+   h+='<tr'+(p.ext?' style="background:#fcfaf5"':'')+'><td><b>'+p.name+'</b>'+badge+'</td><td>'+dcell+'</td><td>'+tcell+'</td><td class="num">'+p.nd+'</td></tr>';});
  h+='</tbody></table>'; box.innerHTML=h;
- box.querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;dirSort.asc=dirSort.k===k?!dirSort.asc:true;dirSort.k=k;buildDir();});
+ box.querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;dirSort.asc=dirSort.k===k?!dirSort.asc:false;dirSort.k=k;buildDir();});
  box.querySelectorAll('.pill').forEach(s=>s.onclick=()=>{selectDist(s.dataset.d);document.getElementById('mapbox').scrollIntoView({behavior:'smooth',block:'center'});});
 }
 
@@ -528,12 +530,6 @@ function buildPlaceHealth(){
 
 function buildExt(){
  const srcLink=s=>s?'<a href="'+s+'" target="_blank" rel="noopener">source ↗</a>':'<span class="mini">public sources</span>';
- let h='<table><thead><tr><th>Organisation</th><th>Indicative districts</th><th>Focus</th><th>Ref</th></tr></thead><tbody>';
- EXT_IMPL.forEach(o=>{h+='<tr><td><b>'+o.name+'</b></td><td>'+
-   (o.districts.length?o.districts.map(d=>'<span class="tag pill" data-d="'+d+'">'+d.replace('-Kharsawan','-K.')+'</span>').join(''):'<span class="tag">Statewide</span>')+
-   '</td><td class="mini">'+o.focus+'</td><td class="mini">'+srcLink(o.src)+'</td></tr>';});
- h+='</tbody></table>'; const box=document.getElementById('extimpl'); box.innerHTML=h;
- box.querySelectorAll('.pill').forEach(s=>s.onclick=()=>{selectDist(s.dataset.d);document.getElementById('mapbox').scrollIntoView({behavior:'smooth',block:'center'});});
  let f='<table><thead><tr><th>Funder</th><th>Footprint / instrument</th><th>Ref</th></tr></thead><tbody>';
  EXT_FUND.forEach(o=>{f+='<tr><td><b>'+o.name+'</b></td><td class="mini">'+o.foot+'</td><td class="mini">'+srcLink(o.src)+'</td></tr>';});
  f+='</tbody></table>'; document.getElementById('extfund').innerHTML=f;
