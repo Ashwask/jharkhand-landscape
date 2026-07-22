@@ -180,6 +180,14 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
  <div class="card"><h2>Funders &amp; philanthropies present</h2><div class="tbl" id="extfund"></div></div>
 </div>
 
+<div class="section-title">Government spend &amp; allocation <span style="color:#8a4fbf">✳ indicative</span></div>
+<p class="section-sub">The largest place-based public money in Jharkhand. <b>DMF (District Mineral Foundation)</b> is district-specific and concentrated in the coal/iron belt — see the <b>“DMF mining fund ✳”</b> map lens. State &amp; central schemes are largely statewide. Figures from public sources (CSE, state budget, press); DMF district split is cumulative to Mar-2018 and total has since grown well beyond ₹12,000 Cr.</p>
+<div class="grid">
+ <div class="card"><h2>DMF (mining fund) — top districts</h2><div class="tbl" id="govtdmf"></div></div>
+ <div class="card"><h2>Major schemes &amp; outlays</h2><div class="tbl" id="govtsch"></div></div>
+</div>
+<div class="card cardpad" style="margin-top:14px"><b>On CSR currency &amp; “live scraping”:</b> <span class="mini">The dashboard's CSR layer already holds the latest <b>complete</b> year (FY2023-24) from the MCA National CSR Portal (csr.gov.in). MCA publishes company/state/district/sector-wise data for the last 5 years, but there is <b>no open API</b> for reliable client-side (in-browser) scraping, and FY2024-25 district aggregates are not yet fully published. A refresh means a one-time manual pull from csr.gov.in / data.gov.in and re-running the build — I can wire that when the new year lands.</span></div>
+
 <div class="foot" id="foot"></div>
 </div>
 
@@ -196,6 +204,9 @@ const EXT_IMPL=[
  {name:'Ekjut',districts:['West Singhbhum','Saraikela-Kharsawan'],focus:'Maternal & newborn health (participatory learning)',src:''},
  {name:'CINI (Child In Need Institute)',districts:['Ranchi'],focus:'Child health & nutrition (+ statewide)',src:''},
  {name:'NEEDS',districts:['Deoghar','Dumka','Godda'],focus:'WASH · livelihoods (Santhal Pargana)',src:''},
+ {name:'CEED (Centre for Environment & Energy Dev.)',districts:['Ranchi','Dhanbad','Bokaro'],focus:'Climate · clean energy · air quality — technical partner to Govt of Jharkhand',src:'https://ceedindia.org/'},
+ {name:'Lok Prerna',districts:['Deoghar','Dumka'],focus:'WASH · NRM · livelihoods · women & child rights',src:''},
+ {name:'Tata Steel Foundation',districts:['East Singhbhum','West Singhbhum','Saraikela-Kharsawan'],focus:'Tribal development — 4,500 villages (JH + Odisha)',src:'https://www.tatasteelfoundation.org/'},
  {name:'JSLPS (Govt of Jharkhand)',districts:[],focus:'SHG / livelihoods mission — all 24 districts',src:'https://www.jslps.org/'}
 ];
 const EXT_FUND=[
@@ -204,7 +215,22 @@ const EXT_FUND=[
  {name:'Azim Premji Foundation',foot:'Gumla, Ranchi, Simdega — health, education, livelihoods',src:'https://azimpremjifoundation.org/who-we-are/where-we-work/jharkhand/'},
  {name:'HDFC Bank (Parivartan)',foot:'Co-funds Lakhpati Kisan across districts',src:'https://www.tata.com/newsroom/community/tata-trusts-philanthropies-donors-partnerships'},
  {name:'Rainmatter Foundation',foot:'Ecosystem funder — the partners mapped above',src:'https://rainmatter.org/'},
- {name:'Corporate CSR (see CSR lens)',foot:'Tata Steel Fdn (E./W. Singhbhum, Saraikela) · Adani Fdn (Godda) · CCL/Coal India (Ramgarh, Hazaribagh, Bokaro, Chatra, Dhanbad) · NTPC · SBI Fdn',src:''}
+ {name:'EdelGive Foundation (GROW Fund)',foot:'Backs Jharkhand NGOs; co-funders incl. Gates, Rohini Nilekani, A.T.E. Chandra, MacArthur, Rainmatter',src:'https://www.edelgive.org/'},
+ {name:'Rohini Nilekani Philanthropies',foot:'Climate & environment, gender, active citizenship',src:'https://rohininilekani.org/'},
+ {name:'A.T.E. Chandra Foundation',foot:'NGO institutional strengthening + water bodies',src:''},
+ {name:'Bill & Melinda Gates Foundation',foot:'Health & nutrition; GROW Fund core funder',src:''},
+ {name:'Tata Steel Foundation',foot:'CSR — 4,500 villages across Kolhan (E./W. Singhbhum, Saraikela)',src:'https://www.tatasteelfoundation.org/'},
+ {name:'Corporate CSR (see CSR lens)',foot:'Adani Fdn (Godda) · CCL/Coal India (Ramgarh, Hazaribagh, Bokaro, Chatra, Dhanbad) · NTPC · SBI Fdn',src:''}
+];
+/* ---- GOVERNMENT SPEND & ALLOCATION (indicative) ---- */
+const GOVT_DMF={'Dhanbad':715,'Chatra':425.8,'West Singhbhum':424,'Ramgarh':414,'Bokaro':265,'Godda':200}; // ₹Cr cumulative to Mar-2018, CSE
+const maxDMF=Math.max(...Object.values(GOVT_DMF));
+const GOVT_SCHEMES=[
+ {name:'Maiyan Samman Yojana',outlay:'₹13,363 Cr',yr:'2025-26',focus:'Women DBT — ₹2,500/mo to ~50 lakh women',foot:'Statewide'},
+ {name:'Abua Awas Yojana',outlay:'₹16,320 Cr',yr:'3 phases',focus:'Housing — 8 lakh pucca houses',foot:'₹4,100 Cr/yr proposed'},
+ {name:'MGNREGA (state 60:40 share)',outlay:'₹5,640 Cr',yr:'annual',focus:'Wage employment · NRM assets',foot:'Statewide'},
+ {name:'PM-JANMAN',outlay:'₹1,360 Cr+',yr:'central',focus:'PVTG habitations — housing, roads, water',foot:'PVTG-heavy districts'},
+ {name:'State Budget “Abua Dishom”',outlay:'₹1.58 lakh Cr',yr:'FY2026-27',focus:'Social justice + infrastructure',foot:'Total state outlay'}
 ];
 const extCount={}; CANON.forEach(d=>extCount[d]=0);
 EXT_IMPL.forEach(o=>o.districts.forEach(d=>{if(d in extCount)extCount[d]++;}));
@@ -277,7 +303,9 @@ const lenses={
      if(v.partners.length===0)return '#e79a6a'; if(v.aspirational&&v.partners.length<=1)return '#f0c088'; return '#cfe0d8';},
    legend:()=>gapLegend()},
  external:{label:'External orgs ✳',fill:d=>{const c=extCount[d];return c?['#f1f5fa','#e6ddc9','#d8c48f','#c79a4e','#b07a1f'][Math.min(c,4)]:'#f1f5fa';},
-   legend:()=>gradLegendC('Other orgs present (indicative)',['#f4efe3','#e6ddc9','#d8c48f','#c79a4e','#b07a1f'],'0 → '+maxExt+'+')}
+   legend:()=>gradLegendC('Other orgs present (indicative)',['#f4efe3','#e6ddc9','#d8c48f','#c79a4e','#b07a1f'],'0 → '+maxExt+'+')},
+ dmf:{label:'DMF mining fund ✳',fill:d=>{const v=GOVT_DMF[d]||0;if(!v)return '#f2eef6';const t=v/maxDMF;const p=['#e7dcf0','#c9b0e0','#a97fce','#8a4fbf','#6b2fa0'];return p[Math.min(p.length-1,Math.floor(t*(p.length-1)+0.001))];},
+   legend:()=>gradLegendC('DMF collected ₹Cr (to Mar-2018, CSE)',['#f2eef6','#c9b0e0','#a97fce','#8a4fbf','#6b2fa0'],'0 → ₹'+maxDMF+' Cr')}
 };
 function domTheme(d){const f={};PARTNERS.forEach(p=>{if(p.districts.includes(d))p.themes.forEach(t=>f[t]=(f[t]||0)+1);});
  let best=null,bv=0;for(const k in f)if(f[k]>bv){bv=f[k];best=k;}return best;}
@@ -364,6 +392,7 @@ function selectDist(name){selD=name;
  if(v.cg&&v.cg.blocks){h+='<div class="sec"><div class="t">Common Ground blocks</div><div class="blk">'+v.cg.blocks+'</div></div>';}
  const ext=extByDist(name);
  if(ext.length){h+='<div class="sec"><div class="t">Other orgs — indicative ✳</div><div class="chips">'+ext.map(o=>'<span class="chip" style="border-left:3px solid #b07a1f">'+o+'</span>').join('')+'</div></div>';}
+ if(GOVT_DMF[name]){h+='<div class="sec"><div class="t">DMF mining fund ✳</div><div class="blk">₹'+GOVT_DMF[name]+' Cr collected (cumulative to Mar-2018, CSE) — mining-affected-area fund.</div></div>';}
  // CSR sparkline
  const yr=[...YEARS].reverse(); const vals=yr.map(y=>v.csr[y]||0); const mx=Math.max(...vals,1);
  h+='<div class="sec"><div class="t">CSR spend trend (₹ Cr)</div><div class="spark">';
@@ -510,7 +539,19 @@ function buildExt(){
  f+='</tbody></table>'; document.getElementById('extfund').innerHTML=f;
 }
 
-paint(); buildHealth(); buildMatrix(); buildPlaceHealth(); buildDir(); buildDisTbl(); buildExt();
+function buildGovt(){
+ const dmf=Object.entries(GOVT_DMF).sort((a,b)=>b[1]-a[1]);
+ let h='<table><thead><tr><th>District</th><th class="num">DMF ₹Cr</th><th>Share of state DMF</th></tr></thead><tbody>';
+ const tot=2696;
+ dmf.forEach(([d,v])=>{h+='<tr><td><span class="dot" style="background:#8a4fbf"></span><b class="pill" data-d="'+d+'">'+d+'</b></td><td class="num">₹'+v+'</td><td><span class="track" style="display:inline-block;width:60%;height:8px;background:#efe8f6;border-radius:5px;overflow:hidden;vertical-align:middle"><i style="display:block;height:100%;width:'+(v/maxDMF*100)+'%;background:#8a4fbf"></i></span> <span class="mini">'+(v/tot*100).toFixed(0)+'%</span></td></tr>';});
+ h+='</tbody></table>'; const box=document.getElementById('govtdmf'); box.innerHTML=h;
+ box.querySelectorAll('.pill').forEach(s=>s.onclick=()=>{selectDist(s.dataset.d);document.getElementById('mapbox').scrollIntoView({behavior:'smooth',block:'center'});});
+ let s='<table><thead><tr><th>Scheme</th><th>Outlay</th><th>Focus</th></tr></thead><tbody>';
+ GOVT_SCHEMES.forEach(o=>{s+='<tr><td><b>'+o.name+'</b><br><span class="mini">'+o.foot+'</span></td><td class="mini"><b>'+o.outlay+'</b><br>'+o.yr+'</td><td class="mini">'+o.focus+'</td></tr>';});
+ s+='</tbody></table>'; document.getElementById('govtsch').innerHTML=s;
+}
+
+paint(); buildHealth(); buildMatrix(); buildPlaceHealth(); buildDir(); buildDisTbl(); buildExt(); buildGovt();
 </script></body></html>'''
 
 HTML = HTML.replace('__MODEL__', MODEL).replace('__GEO__', GEO)
