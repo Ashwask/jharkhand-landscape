@@ -169,6 +169,16 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 <p class="section-sub">Where thematic energy concentrates. <span style="color:#0d6e8c">●</span> teal = source-file partner · <span style="color:#b07a1f">●</span> gold = ✳ indicative org (theme keyword-mapped from its focus). Footer = orgs per theme (source + indicative, with source-only in grey).</p>
 <div class="card cardpad mtx" id="matrix"></div>
 
+<div class="section-title">Funders &amp; philanthropies present <span style="color:#b07a1f">✳ indicative</span></div>
+<p class="section-sub">Who funds whom in Jharkhand. The <b>“Supports in Jharkhand”</b> column links each funder to the implementing org(s) it backs here (gold tags match the Partner directory); where a funder's local grantees aren't public, that's stated plainly. Compiled from public sources, kept out of the health scores.</p>
+<div class="card"><div class="tbl" id="extfund"></div></div>
+
+<div class="section-title">Government spend &amp; allocation <span style="color:#8a4fbf">✳ indicative</span></div>
+<p class="section-sub">The largest place-based public money in Jharkhand. <b>DMF (District Mineral Foundation)</b> is district-specific and concentrated in the coal/iron belt — see the <b>“DMF mining fund ✳”</b> map lens. State &amp; central schemes are largely statewide. Figures from public sources (CSE, state budget, press); DMF district split is cumulative to Mar-2018 and total has since grown well beyond ₹12,000 Cr.</p>
+<div class="grid">
+ <div class="card"><h2>DMF (mining fund) — top districts</h2><div class="tbl" id="govtdmf"></div></div>
+ <div class="card"><h2>Major schemes &amp; outlays</h2><div class="tbl" id="govtsch"></div></div>
+</div>
 <div class="section-title collapser closed" id="dirToggle" data-wrap="dirwrap">Partner directory <span class="caret">▾</span> <span class="mini" style="font-weight:400" id="dircount"></span></div>
 <div id="dirwrap" class="collapsed">
 <p class="section-sub">All implementing organisations — your source-file partners plus <span style="color:#b07a1f">✳ indicative</span> orgs compiled from public sources (PRADAN, CInI, CEED, Tata Steel Foundation…). Click a column header to sort; click a district tag to focus the map.</p>
@@ -190,19 +200,8 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 <div class="card tbl" id="distbl"></div>
 </div>
 
-<div class="section-title">Funders &amp; philanthropies present <span style="color:#b07a1f">✳ indicative</span></div>
-<p class="section-sub">Who funds whom in Jharkhand. The <b>“Supports in Jharkhand”</b> column links each funder to the implementing org(s) it backs here (gold tags match the Partner directory); where a funder's local grantees aren't public, that's stated plainly. Compiled from public sources, kept out of the health scores.</p>
-<div class="card"><div class="tbl" id="extfund"></div></div>
-
-<div class="section-title">Government spend &amp; allocation <span style="color:#8a4fbf">✳ indicative</span></div>
-<p class="section-sub">The largest place-based public money in Jharkhand. <b>DMF (District Mineral Foundation)</b> is district-specific and concentrated in the coal/iron belt — see the <b>“DMF mining fund ✳”</b> map lens. State &amp; central schemes are largely statewide. Figures from public sources (CSE, state budget, press); DMF district split is cumulative to Mar-2018 and total has since grown well beyond ₹12,000 Cr.</p>
-<div class="grid">
- <div class="card"><h2>DMF (mining fund) — top districts</h2><div class="tbl" id="govtdmf"></div></div>
- <div class="card"><h2>Major schemes &amp; outlays</h2><div class="tbl" id="govtsch"></div></div>
-</div>
-<div class="card cardpad" style="margin-top:14px"><b>On CSR currency &amp; “live scraping”:</b> <span class="mini">The dashboard's CSR layer already holds the latest <b>complete</b> year (FY2023-24) from the MCA National CSR Portal (csr.gov.in). MCA publishes company/state/district/sector-wise data for the last 5 years, but there is <b>no open API</b> for reliable client-side (in-browser) scraping, and FY2024-25 district aggregates are not yet fully published. A refresh means a one-time manual pull from csr.gov.in / data.gov.in and re-running the build — I can wire that when the new year lands.</span></div>
-
-<div class="section-title">Sources</div>
+<div class="section-title collapser closed" data-wrap="srcwrap">Sources <span class="caret">▾</span></div>
+<div id="srcwrap" class="collapsed">
 <p class="section-sub">Everything above is traceable. Source spreadsheets are the spine; ✳ indicative orgs, funders and government figures are compiled from the public links below and kept out of the health scores.</p>
 <div class="card cardpad srcs">
  <div class="srcgrid">
@@ -217,6 +216,7 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
   <div><div class="srch">Government spend</div>
    <ul><li><a href="https://www.cseindia.org/district-mineral-foundation-dmf-in-jharkhand-is-failing-to-fulfil-its-objectives-cse-8888" target="_blank" rel="noopener">CSE</a> — DMF Jharkhand (district split)</li><li><a href="https://csep.org/discussion-note/district-mineral-foundation-funds-evaluating-the-performance/" target="_blank" rel="noopener">CSEP</a> — DMF performance</li><li><a href="https://theindianawaaz.com/jharkhand-budget-2026-27-%E2%82%B91-58-lakh-crore-abua-dishom-outlay-focuses-on-social-justice-infrastructure/" target="_blank" rel="noopener">Jharkhand Budget 2026-27</a> — schemes &amp; outlays</li></ul></div>
  </div>
+</div>
 </div>
 
 <div class="foot" id="foot"></div>
