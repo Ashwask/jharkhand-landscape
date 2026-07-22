@@ -99,8 +99,8 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 .section-sub{color:var(--mut); font-size:12px; margin:0 0 12px}
 .foot{color:var(--mut); font-size:11px; margin-top:34px; border-top:1px solid var(--line); padding-top:14px}
 .pill{cursor:pointer}
-.collapser{cursor:pointer; user-select:none; display:flex; align-items:center; gap:9px}
-.collapser .caret{font-size:12px; color:var(--mut); transition:transform .15s}
+.collapser{cursor:pointer; user-select:none; display:block}
+.collapser .caret{display:inline-block; font-size:12px; color:var(--mut); margin-left:7px; transition:transform .15s}
 .collapser.closed .caret{transform:rotate(-90deg)}
 .collapsed{display:none}
 .srcgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px 22px}
@@ -179,8 +179,8 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 <div class="card tbl" id="dirtbl"></div>
 </div>
 
-<div class="section-title collapser" data-wrap="phwrap">Place health — where attention is needed <span class="caret">▾</span></div>
-<div id="phwrap">
+<div class="section-title collapser closed" data-wrap="phwrap">Place health — where attention is needed <span class="caret">▾</span></div>
+<div id="phwrap" class="collapsed">
 <p class="section-sub">Each district scored 0–100 on how well it is served (partner presence 45% · thematic breadth 30% · resilience/no single-point-of-failure 25%), ranked neediest-first. Priority = aspirational &amp; weakly served.</p>
 <div class="card">
  <div class="phhead"><span>District</span><span>Coverage strength</span><span style="text-align:right">Score</span></div>
@@ -188,8 +188,8 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 </div>
 </div>
 
-<div class="section-title collapser" data-wrap="dcwrap">District coverage table <span class="caret">▾</span></div>
-<div id="dcwrap">
+<div class="section-title collapser closed" data-wrap="dcwrap">District coverage table <span class="caret">▾</span></div>
+<div id="dcwrap" class="collapsed">
 <p class="section-sub">The full grid: partners, themes, aspirational status (per TRI), TRI presence and latest-year CSR.</p>
 <div class="card tbl" id="distbl"></div>
 </div>
