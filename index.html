@@ -172,7 +172,7 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 <div class="card tbl" id="distbl"></div>
 
 <div class="section-title">Funders &amp; philanthropies present <span style="color:#b07a1f">✳ indicative</span></div>
-<p class="section-sub">Who funds whom in Jharkhand. The <b>“Supports in Jharkhand”</b> column links each funder to the implementing org(s) it backs here (gold tags match the Partner directory); where a funder's local grantees aren't public, that's stated plainly. <b>Scale ₹ Cr is organisation-level</b> (annual giving / CSR / fund size, mostly all-India) — <b>not</b> Jharkhand-specific spend, which funders rarely disclose by state; read it as relative magnitude only. Compiled from public sources, kept out of the health scores.</p>
+<p class="section-sub">Who funds whom in Jharkhand. The <b>“Supports in Jharkhand”</b> column links each funder to the implementing org(s) it backs here (gold tags match the Partner directory); where a funder's local grantees aren't public, that's stated plainly. Compiled from public sources, kept out of the health scores.</p>
 <div class="card"><div class="tbl" id="extfund"></div></div>
 
 <div class="section-title">Government spend &amp; allocation <span style="color:#8a4fbf">✳ indicative</span></div>
@@ -552,12 +552,11 @@ function buildPlaceHealth(){
 
 function buildExt(){
  const srcLink=s=>s?'<a href="'+s+'" target="_blank" rel="noopener">source ↗</a>':'<span class="mini">public sources</span>';
- let f='<table><thead><tr><th>Funder</th><th>Supports in Jharkhand</th><th>Scale ₹ Cr <span class="mini">✳ org-level</span></th><th>Ref</th></tr></thead><tbody>';
+ let f='<table><thead><tr><th>Funder</th><th>Supports in Jharkhand</th><th>Ref</th></tr></thead><tbody>';
  EXT_FUND.forEach(o=>{
    const orgTags=(o.orgs&&o.orgs.length)?o.orgs.map(n=>'<span class="tag" style="border-left:3px solid #b07a1f">'+n+'</span>').join(' '):'';
    f+='<tr><td><b>'+o.name+'</b></td>'
     +'<td>'+orgTags+(orgTags?'<br>':'')+'<span class="mini">'+o.supports+'</span></td>'
-    +'<td><b>'+(o.amt||'—')+'</b>'+(o.amtn?'<br><span class="mini">'+o.amtn+'</span>':'')+'</td>'
     +'<td class="mini">'+srcLink(o.src)+'</td></tr>';});
  f+='</tbody></table>'; document.getElementById('extfund').innerHTML=f;
 }
