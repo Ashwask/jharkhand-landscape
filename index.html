@@ -365,7 +365,7 @@ const lenses={
 };
 function domTheme(d){const f={};PARTNERS.forEach(p=>{if(p.districts.includes(d))p.themes.forEach(t=>f[t]=(f[t]||0)+1);});
  let best=null,bv=0;for(const k in f)if(f[k]>bv){bv=f[k];best=k;}return best;}
-let curLens='partners', selD=null;
+let curLens='placehealth', selD=null;
 
 /* legends */
 function gradLegend(title,max,money){const w=el('div');w.appendChild(el('span','legtitle',title));
