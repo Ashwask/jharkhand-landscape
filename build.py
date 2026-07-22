@@ -537,7 +537,7 @@ function buildDisTbl(){
  box.querySelectorAll('.pill').forEach(s=>s.onclick=()=>{selectDist(s.dataset.d);document.getElementById('mapbox').scrollIntoView({behavior:'smooth',block:'center'});});
 }
 
-function updateFoot(){const wl=whiteList();document.getElementById('foot').innerHTML='Fully self-contained (offline) · '+(INCLUDE_EXT?(PARTNERS.length+EXT_IMPL.length)+' orgs (incl. ✳ indicative)':PARTNERS.length+' source-file partners')+' across '+coveredList().length+'/24 districts · Whitespace: <b>'+(wl.length?wl.join(', '):'none')+'</b>. Anchors: '+MODEL.anchors.map(a=>a.name).join(', ')+'. Scoring '+(INCLUDE_EXT?'<b>includes</b>':'<b>excludes</b>')+' ✳ indicative orgs.';}
+function updateFoot(){const wl=whiteList();document.getElementById('foot').innerHTML='Fully self-contained (offline) · '+(INCLUDE_EXT?(PARTNERS.length+EXT_IMPL.length)+' orgs (incl. ✳ indicative)':PARTNERS.length+' source-file partners')+' across '+coveredList().length+'/24 districts · Whitespace: <b>'+(wl.length?wl.join(', '):'none')+'</b>. Anchors: '+MODEL.anchors.map(a=>a.name).join(', ')+'. Scoring '+(INCLUDE_EXT?'<b>includes</b>':'<b>excludes</b>')+' ✳ indicative orgs.<br>MIT licensed · source &amp; issues: <a href="https://github.com/Ashwask/jharkhand-landscape" target="_blank" rel="noopener">github.com/Ashwask/jharkhand-landscape</a>';}
 
 /* ---------- ecosystem + place health ---------- */
 const BAND={strong:['#2b8a3e','#e7f3ea','Strong'],mod:['#b45309','#fdf0e2','Moderate'],weak:['#c2410c','#fdece3','Weak']};
