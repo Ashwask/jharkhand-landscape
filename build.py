@@ -29,6 +29,12 @@ a{color:var(--accent)}
 .stat .l{color:var(--mut); font-size:11px; margin-top:5px; text-transform:uppercase; letter-spacing:.04em}
 .stat.warn .n{color:var(--accent2)}
 .grid{display:grid; grid-template-columns:1.35fr 1fr; gap:18px; align-items:start}
+.intro{margin-top:16px; border-left:3px solid var(--accent)}
+.intro p{margin:0 0 9px}
+.intro p:last-child{margin:0}
+.intro-lead{font-size:15px; line-height:1.5; color:var(--ink)}
+.intro-body{font-size:13px; line-height:1.55; color:var(--ink2)}
+.intro-src{font-size:11.5px; line-height:1.45; color:var(--mut)}
 .grid.hero{margin-top:20px}
 .grid.hero .card h2{font-size:14px}
 @media(max-width:960px){.grid{grid-template-columns:1fr}}
@@ -148,8 +154,13 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 </style></head>
 <body><div class="wrap">
 <h1>Jharkhand Landscape — Who Does What Where</h1>
-<p class="sub">Partners × districts × themes, with TRI presence, Common Ground blocks and CSR flow. Internal sense-making view.</p>
-<p class="prov">Sources: Partners Geography &amp; Thematic focus · TRI Geographic Presence (Jul 2026) · Common Ground block list · Jharkhand CSR data (MCA) · district boundaries © udit-001/india-maps-data (2011 census). District names &amp; themes normalised; some partner rows list out-of-state / town names (kept out of the map).</p>
+<p class="sub">Partners × districts × themes, with TRI presence, Common Ground blocks and CSR flow. A sense-making view for partnership &amp; ecosystem decisions.</p>
+
+<div class="intro card cardpad">
+ <p class="intro-lead">A landscape map of the development-partner ecosystem in Jharkhand — <b>who works where, on what, and where the gaps are</b> — to inform where to add partners, steer funding, and strengthen thin themes.</p>
+ <p class="intro-body"><b>How to read it.</b> The map switches between lenses (place health, partner density, theme breadth, CSR, DMF, coverage gap…); click any district for its full profile. Below sit the <b>Ecosystem &amp; Place Health</b> scores, the partner × theme matrix, funders and government spend. <span style="color:#b07a1f">✳ indicative</span> layers (external orgs, funders, DMF) are compiled from public sources and <b>kept out of the health scores</b> unless you toggle them in; the source spreadsheets are the spine. Fully offline &amp; self-contained.</p>
+ <p class="intro-src">Sources: Partners Geography &amp; Thematic focus · TRI Geographic Presence (Jul 2026) · Common Ground block list · Jharkhand CSR (MCA) · boundaries © udit-001/india-maps-data (2011 census). District names &amp; themes normalised; out-of-state / town names kept off the map. See the full <b>Sources</b> section at the bottom.</p>
+</div>
 
 <div class="grid hero">
  <div class="card">
