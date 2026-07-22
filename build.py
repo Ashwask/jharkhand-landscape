@@ -173,22 +173,26 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 <p class="section-sub">Where thematic energy concentrates. <span style="color:#0d6e8c">●</span> teal = source-file partner · <span style="color:#b07a1f">●</span> gold = ✳ indicative org (theme keyword-mapped from its focus). Footer = orgs per theme (source + indicative, with source-only in grey).</p>
 <div class="card cardpad mtx" id="matrix"></div>
 
-<div class="section-title collapser closed" id="dirToggle">Partner directory <span class="caret">▾</span> <span class="mini" style="font-weight:400" id="dircount"></span></div>
+<div class="section-title collapser closed" id="dirToggle" data-wrap="dirwrap">Partner directory <span class="caret">▾</span> <span class="mini" style="font-weight:400" id="dircount"></span></div>
 <div id="dirwrap" class="collapsed">
 <p class="section-sub">All implementing organisations — your source-file partners plus <span style="color:#b07a1f">✳ indicative</span> orgs compiled from public sources (PRADAN, CInI, CEED, Tata Steel Foundation…). Click a column header to sort; click a district tag to focus the map.</p>
 <div class="card tbl" id="dirtbl"></div>
 </div>
 
-<div class="section-title">Place health — where attention is needed</div>
+<div class="section-title collapser" data-wrap="phwrap">Place health — where attention is needed <span class="caret">▾</span></div>
+<div id="phwrap">
 <p class="section-sub">Each district scored 0–100 on how well it is served (partner presence 45% · thematic breadth 30% · resilience/no single-point-of-failure 25%), ranked neediest-first. Priority = aspirational &amp; weakly served.</p>
 <div class="card">
  <div class="phhead"><span>District</span><span>Coverage strength</span><span style="text-align:right">Score</span></div>
  <div class="ph" id="placehealth"></div>
 </div>
+</div>
 
-<div class="section-title">District coverage table</div>
+<div class="section-title collapser" data-wrap="dcwrap">District coverage table <span class="caret">▾</span></div>
+<div id="dcwrap">
 <p class="section-sub">The full grid: partners, themes, aspirational status (per TRI), TRI presence and latest-year CSR.</p>
 <div class="card tbl" id="distbl"></div>
+</div>
 
 <div class="section-title">Funders &amp; philanthropies present <span style="color:#b07a1f">✳ indicative</span></div>
 <p class="section-sub">Who funds whom in Jharkhand. The <b>“Supports in Jharkhand”</b> column links each funder to the implementing org(s) it backs here (gold tags match the Partner directory); where a funder's local grantees aren't public, that's stated plainly. Compiled from public sources, kept out of the health scores.</p>
@@ -632,10 +636,10 @@ document.getElementById('extToggle').addEventListener('change',e=>{INCLUDE_EXT=e
 
 /* initial render */
 renderStrip(); paint(); buildHealth(); buildMatrix(); buildPlaceHealth(); buildDir(); buildDisTbl(); updateFoot(); buildExt(); buildGovt();
-/* collapsible partner directory */
+/* collapsible sections (directory / place health / district table) */
 document.getElementById('dircount').textContent='('+(PARTNERS.length+EXT_IMPL.length)+' organisations)';
-const dirToggle=document.getElementById('dirToggle'), dirwrap=document.getElementById('dirwrap');
-dirToggle.onclick=()=>{const hidden=dirwrap.classList.toggle('collapsed'); dirToggle.classList.toggle('closed',hidden);};
+document.querySelectorAll('.collapser[data-wrap]').forEach(tg=>{const wrap=document.getElementById(tg.dataset.wrap);
+ tg.addEventListener('click',()=>{const hidden=wrap.classList.toggle('collapsed'); tg.classList.toggle('closed',hidden);});});
 
 /* deep-link: #ext opens with indicative scoring on; #lens=<key> selects a map lens */
 if(location.hash.toLowerCase().includes('ext')){const t=document.getElementById('extToggle');t.checked=true;INCLUDE_EXT=true;renderScored();}
