@@ -99,6 +99,17 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 .section-sub{color:var(--mut); font-size:12px; margin:0 0 12px}
 .foot{color:var(--mut); font-size:11px; margin-top:34px; border-top:1px solid var(--line); padding-top:14px}
 .pill{cursor:pointer}
+.collapser{cursor:pointer; user-select:none; display:inline-flex; align-items:center; gap:9px}
+.collapser .caret{font-size:12px; color:var(--mut); transition:transform .15s}
+.collapser.closed .caret{transform:rotate(-90deg)}
+.collapsed{display:none}
+.srcgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px 22px}
+@media(max-width:760px){.srcgrid{grid-template-columns:1fr 1fr}}
+.srch{font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink2); font-weight:700; margin-bottom:6px}
+.srcs ul{margin:0; padding:0; list-style:none}
+.srcs li{font-size:12px; color:var(--mut); padding:3px 0; line-height:1.35}
+.srcs a{color:var(--accent); text-decoration:none}
+.srcs a:hover{text-decoration:underline}
 .exttoggle{display:inline-flex; align-items:center; gap:8px; margin:0 0 12px; padding:8px 13px; border:1px solid var(--line); border-radius:9px; background:#fff; font-size:12.5px; color:var(--ink2); cursor:pointer; box-shadow:var(--shadow)}
 .exttoggle input{width:15px; height:15px; accent-color:var(--gold); cursor:pointer}
 .exttoggle:hover{border-color:var(--gold)}
@@ -162,9 +173,11 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 <p class="section-sub">Where thematic energy concentrates. <span style="color:#0d6e8c">●</span> teal = source-file partner · <span style="color:#b07a1f">●</span> gold = ✳ indicative org (theme keyword-mapped from its focus). Footer = orgs per theme (source + indicative, with source-only in grey).</p>
 <div class="card cardpad mtx" id="matrix"></div>
 
-<div class="section-title">Partner directory</div>
+<div class="section-title collapser closed" id="dirToggle">Partner directory <span class="caret">▾</span> <span class="mini" style="font-weight:400" id="dircount"></span></div>
+<div id="dirwrap" class="collapsed">
 <p class="section-sub">All implementing organisations — your source-file partners plus <span style="color:#b07a1f">✳ indicative</span> orgs compiled from public sources (PRADAN, CInI, CEED, Tata Steel Foundation…). Click a column header to sort; click a district tag to focus the map.</p>
 <div class="card tbl" id="dirtbl"></div>
+</div>
 
 <div class="section-title">Place health — where attention is needed</div>
 <p class="section-sub">Each district scored 0–100 on how well it is served (partner presence 45% · thematic breadth 30% · resilience/no single-point-of-failure 25%), ranked neediest-first. Priority = aspirational &amp; weakly served.</p>
@@ -188,6 +201,23 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
  <div class="card"><h2>Major schemes &amp; outlays</h2><div class="tbl" id="govtsch"></div></div>
 </div>
 <div class="card cardpad" style="margin-top:14px"><b>On CSR currency &amp; “live scraping”:</b> <span class="mini">The dashboard's CSR layer already holds the latest <b>complete</b> year (FY2023-24) from the MCA National CSR Portal (csr.gov.in). MCA publishes company/state/district/sector-wise data for the last 5 years, but there is <b>no open API</b> for reliable client-side (in-browser) scraping, and FY2024-25 district aggregates are not yet fully published. A refresh means a one-time manual pull from csr.gov.in / data.gov.in and re-running the build — I can wire that when the new year lands.</span></div>
+
+<div class="section-title">Sources</div>
+<p class="section-sub">Everything above is traceable. Source spreadsheets are the spine; ✳ indicative orgs, funders and government figures are compiled from the public links below and kept out of the health scores.</p>
+<div class="card cardpad srcs">
+ <div class="srcgrid">
+  <div><div class="srch">Source files (provided)</div>
+   <ul><li>Partners — Geography &amp; Thematic focus</li><li>TRI Geographic Presence (Jul 2026)</li><li>Common Ground — block list</li><li>SOTH places list</li></ul></div>
+  <div><div class="srch">Boundaries &amp; CSR</div>
+   <ul><li><a href="https://github.com/udit-001/india-maps-data" target="_blank" rel="noopener">udit-001/india-maps-data</a> — district boundaries (2011 census)</li><li><a href="https://www.csr.gov.in/" target="_blank" rel="noopener">MCA National CSR Portal</a> — district CSR</li><li><a href="https://www.data.gov.in/resource/development-sector-wise-details-corporate-social-responsibility-csr-expenditure-jharkhand" target="_blank" rel="noopener">data.gov.in</a> — Jharkhand CSR</li></ul></div>
+  <div><div class="srch">Implementing orgs ✳</div>
+   <ul><li><a href="https://www.pradan.net/" target="_blank" rel="noopener">PRADAN</a></li><li><a href="https://cinicell.org/" target="_blank" rel="noopener">CInI (Tata Trusts)</a></li><li><a href="https://www.vikasbharti.in/" target="_blank" rel="noopener">Vikas Bharti Bishunpur</a></li><li><a href="https://ceedindia.org/" target="_blank" rel="noopener">CEED</a></li><li><a href="https://www.jslps.org/" target="_blank" rel="noopener">JSLPS</a></li><li><a href="https://www.tatasteelfoundation.org/" target="_blank" rel="noopener">Tata Steel Foundation</a></li></ul></div>
+  <div><div class="srch">Funders ✳</div>
+   <ul><li><a href="https://www.brlf.in/cso-partners/" target="_blank" rel="noopener">BRLF</a></li><li><a href="https://azimpremjifoundation.org/who-we-are/where-we-work/jharkhand/" target="_blank" rel="noopener">Azim Premji Foundation (Jharkhand)</a> · <a href="https://phia.org.in/partner/azim-premji-foundation/" target="_blank" rel="noopener">PHIA partner page</a></li><li><a href="https://rainmatter.org/" target="_blank" rel="noopener">Rainmatter Foundation</a></li><li><a href="https://www.edelgive.org/" target="_blank" rel="noopener">EdelGive GROW Fund</a></li><li><a href="https://rohininilekaniphilanthropies.org/" target="_blank" rel="noopener">Rohini Nilekani Philanthropies</a></li><li><a href="https://www.tatatrusts.org/" target="_blank" rel="noopener">Tata Trusts</a></li></ul></div>
+  <div><div class="srch">Government spend</div>
+   <ul><li><a href="https://www.cseindia.org/district-mineral-foundation-dmf-in-jharkhand-is-failing-to-fulfil-its-objectives-cse-8888" target="_blank" rel="noopener">CSE</a> — DMF Jharkhand (district split)</li><li><a href="https://csep.org/discussion-note/district-mineral-foundation-funds-evaluating-the-performance/" target="_blank" rel="noopener">CSEP</a> — DMF performance</li><li><a href="https://theindianawaaz.com/jharkhand-budget-2026-27-%E2%82%B91-58-lakh-crore-abua-dishom-outlay-focuses-on-social-justice-infrastructure/" target="_blank" rel="noopener">Jharkhand Budget 2026-27</a> — schemes &amp; outlays</li></ul></div>
+ </div>
+</div>
 
 <div class="foot" id="foot"></div>
 </div>
@@ -326,6 +356,8 @@ const lenses={
  gap:{label:'Coverage gap',fill:d=>{const n=effP(d),a=D[d].aspirational;if(n===0&&a)return '#c2410c';
      if(n===0)return '#e79a6a'; if(a&&n<=1)return '#f0c088'; return '#cfe0d8';},
    legend:()=>gapLegend()},
+ placehealth:{label:'Place health score',fill:d=>{const pal=['#c2410c','#e0762f','#e6b84d','#8bbf5a','#2b8a3e'];return pal[Math.min(4,Math.floor(placeScore(d)/20.0001))];},
+   legend:()=>gradLegendC('Place health 0 → 100',['#c2410c','#e0762f','#e6b84d','#8bbf5a','#2b8a3e'],'weak → strong')},
  external:{label:'External orgs ✳',fill:d=>{const c=extCount[d];return c?['#f1f5fa','#e6ddc9','#d8c48f','#c79a4e','#b07a1f'][Math.min(c,4)]:'#f1f5fa';},
    legend:()=>gradLegendC('Other orgs present (indicative)',['#f4efe3','#e6ddc9','#d8c48f','#c79a4e','#b07a1f'],'0 → '+maxExt+'+')},
  dmf:{label:'DMF mining fund ✳',fill:d=>{const v=GOVT_DMF[d]||0;if(!v)return '#f2eef6';const t=v/maxDMF;const p=['#e7dcf0','#c9b0e0','#a97fce','#8a4fbf','#6b2fa0'];return p[Math.min(p.length-1,Math.floor(t*(p.length-1)+0.001))];},
@@ -369,7 +401,7 @@ GEO.features.forEach(f=>{const name=f.properties.district;
  svg.appendChild(p); paths[name]=p;
  const [cx,cy]=centroid(f.geometry);
  const tx=document.createElementNS(svgNS,'text'); tx.setAttribute('x',cx); tx.setAttribute('y',cy);
- tx.setAttribute('class','dlabel'); tx.textContent=name.replace('-Kharsawan','').replace(' Singhbhum','.S');
+ tx.setAttribute('class','dlabel'); tx.dataset.base=name.replace('-Kharsawan','').replace(' Singhbhum','.S'); tx.textContent=tx.dataset.base;
  svg.appendChild(tx); labels[name]=tx;
 });
 mapbox.appendChild(svg);
@@ -378,7 +410,7 @@ mapbox.appendChild(svg);
 const tip=el('div'); tip.style.cssText='position:fixed;pointer-events:none;background:#0f2440;color:#fff;padding:7px 10px;border-radius:8px;font-size:12px;box-shadow:0 6px 20px rgba(0,0,0,.25);z-index:99;display:none;max-width:230px';
 document.body.appendChild(tip);
 function showTip(ev,name){const v=D[name];
- tip.innerHTML='<b>'+name+'</b><br>'+v.partners.length+' partner'+(v.partners.length!=1?'s':'')+' · '+v.themes.length+' themes<br>CSR '+Y0+': '+fmtCr(v.csr[Y0]||0)+(v.aspirational?' · <span style="color:#f0a878">Aspirational</span>':'');
+ tip.innerHTML='<b>'+name+'</b> · health '+placeScore(name)+'/100<br>'+effP(name)+' org'+(effP(name)!=1?'s':'')+' · '+effT(name)+' themes<br>CSR '+Y0+': '+fmtCr(v.csr[Y0]||0)+(v.aspirational?' · <span style="color:#f0a878">Aspirational</span>':'');
  tip.style.display='block'; tip.style.left=Math.min(ev.clientX+14,innerWidth-240)+'px'; tip.style.top=(ev.clientY+14)+'px';}
 function hideTip(){tip.style.display='none';}
 
@@ -388,8 +420,9 @@ Object.entries(lenses).forEach(([k,v])=>{const b=el('button',k===curLens?'on':''
 function paint(){
  [...lensBox.children].forEach(b=>b.classList.toggle('on',b.textContent===lenses[curLens].label));
  CANON.forEach(d=>{const f=lenses[curLens].fill(d); paths[d].setAttribute('fill',f);
-   // label contrast
-   const dark=isDark(f); labels[d].classList.toggle('lite',dark);});
+   // label contrast + place-health score on map
+   const dark=isDark(f); labels[d].classList.toggle('lite',dark);
+   labels[d].textContent = curLens==='placehealth' ? labels[d].dataset.base+' · '+placeScore(d) : labels[d].dataset.base;});
  const lg=document.getElementById('legend'); lg.innerHTML=''; lg.appendChild(lenses[curLens].legend());
 }
 function isDark(hex){if(!hex||hex[0]!=='#'||hex.length<7)return false;const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return (0.299*r+0.587*g+0.114*b)<140;}
@@ -407,6 +440,15 @@ function selectDist(name){selD=name;
  h+='<div class="kv"><div><div class="k">'+(INCLUDE_EXT?'Orgs':'Partners')+'</div><div class="v">'+effP(name)+'</div></div>'
    +'<div><div class="k">Themes</div><div class="v">'+effT(name)+'</div></div>'
    +'<div><div class="k">CSR '+Y0+'</div><div class="v">'+fmtCr(v.csr[Y0]||0)+'</div></div></div>';
+ // place health readout
+ const ps=placeScore(name), pb=BAND[band(ps)], pt=placeTag(name);
+ h+='<div class="sec"><div class="t">Place health score</div>'
+  +'<div style="display:flex;align-items:center;gap:11px">'
+  +'<div style="font-size:28px;font-weight:800;color:'+pb[0]+';line-height:1">'+ps+'<span style="font-size:13px;opacity:.55;font-weight:600">/100</span></div>'
+  +'<span class="tagp" style="background:'+pt.tb+';color:'+pt.tc+'">'+pt.tag+'</span>'
+  +'<span class="mini">'+pb[2]+'</span></div>'
+  +'<div class="track" style="height:8px;background:var(--line2);border-radius:5px;overflow:hidden;margin-top:7px"><i style="display:block;height:100%;width:'+Math.max(ps,2)+'%;background:'+pb[0]+'"></i></div>'
+  +'<div class="mini" style="margin-top:5px">'+effP(name)+' org'+(effP(name)!=1?'s':'')+' (45%) · '+effT(name)+' themes (30%) · resilience (25%)'+(INCLUDE_EXT?' · incl. ✳ indicative':'')+'</div></div>';
  h+='<div class="sec"><div class="t">Partners here</div>';
  if(dp.length){h+='<ul class="plist">';dp.forEach(p=>{h+='<li><b>'+p.name+'</b><br><span class="mini">'+p.themes.join(' · ')+'</span></li>';});h+='</ul>';}
  else h+='<div class="mini">No mapped partner. '+(v.aspirational?'Aspirational district — whitespace.':'')+'</div>';
@@ -543,15 +585,15 @@ function buildHealth(){
 function placeScore(d){const p=effP(d),t=effT(d);
  const sp=Math.min(p/3,1)*45, st=Math.min(t/10,1)*30, sr=(p>=2?1:p===1?.4:0)*25;
  return Math.round(sp+st+sr);}
+function placeTag(d){const p=effP(d),s=placeScore(d),asp=D[d].aspirational;
+ if(p===0&&asp)return{tag:'Whitespace',tc:'#c2410c',tb:'#fdece3',need:0};
+ if(p===0)return{tag:'Uncovered',tc:'#b45309',tb:'#fdf0e2',need:1};
+ if(asp&&s<55)return{tag:'Priority',tc:'#b45309',tb:'#fdf0e2',need:2};
+ if(p===1)return{tag:'Fragile',tc:'#b45309',tb:'#fdf0e2',need:3};
+ return{tag:'Served',tc:'#2b8a3e',tb:'#e7f3ea',need:4};}
 function buildPlaceHealth(){
- const rows=CANON.map(d=>{const p=effP(d),s=placeScore(d),asp=D[d].aspirational;
-  let tag,tc,tb,need;
-  if(p===0&&asp){tag='Whitespace';tc='#c2410c';tb='#fdece3';need=0;}
-  else if(p===0){tag='Uncovered';tc='#b45309';tb='#fdf0e2';need=1;}
-  else if(asp&&s<55){tag='Priority';tc='#b45309';tb='#fdf0e2';need=2;}
-  else if(p===1){tag='Fragile';tc='#b45309';tb='#fdf0e2';need=3;}
-  else{tag='Served';tc='#2b8a3e';tb='#e7f3ea';need=4;}
-  return {d,s,asp,tag,tc,tb,need};});
+ const rows=CANON.map(d=>{const s=placeScore(d),asp=D[d].aspirational,pt=placeTag(d);
+  return {d,s,asp,tag:pt.tag,tc:pt.tc,tb:pt.tb,need:pt.need};});
  rows.sort((a,b)=>a.need-b.need||a.s-b.s);
  document.getElementById('placehealth').innerHTML=rows.map(r=>{const bc=BAND[band(r.s)][0];
   return '<div class="phrow"><span class="pn" data-d="'+r.d+'">'
@@ -590,8 +632,14 @@ document.getElementById('extToggle').addEventListener('change',e=>{INCLUDE_EXT=e
 
 /* initial render */
 renderStrip(); paint(); buildHealth(); buildMatrix(); buildPlaceHealth(); buildDir(); buildDisTbl(); updateFoot(); buildExt(); buildGovt();
-/* deep-link: #ext opens with indicative scoring on */
+/* collapsible partner directory */
+document.getElementById('dircount').textContent='('+(PARTNERS.length+EXT_IMPL.length)+' organisations)';
+const dirToggle=document.getElementById('dirToggle'), dirwrap=document.getElementById('dirwrap');
+dirToggle.onclick=()=>{const hidden=dirwrap.classList.toggle('collapsed'); dirToggle.classList.toggle('closed',hidden);};
+
+/* deep-link: #ext opens with indicative scoring on; #lens=<key> selects a map lens */
 if(location.hash.toLowerCase().includes('ext')){const t=document.getElementById('extToggle');t.checked=true;INCLUDE_EXT=true;renderScored();}
+const hl=location.hash.match(/lens=(\w+)/); if(hl&&lenses[hl[1]]){curLens=hl[1];paint();}
 </script></body></html>'''
 
 HTML = HTML.replace('__MODEL__', MODEL).replace('__GEO__', GEO)
