@@ -74,6 +74,14 @@ svg.map{width:100%; height:auto; display:block}
 .plist li{padding:6px 0; border-bottom:1px solid var(--line2); font-size:13px}
 .plist li:last-child{border:0}
 .blk{font-size:12px; color:var(--ink2); background:var(--c0); border-radius:8px; padding:8px 10px; margin-top:4px}
+.bcov summary{cursor:pointer; font-size:13px; color:var(--ink2); list-style:none; padding:2px 0}
+.bcov summary::-webkit-details-marker{display:none}
+.bcov summary::before{content:'▸'; display:inline-block; margin-right:6px; color:var(--mut); transition:transform .15s}
+.bcov[open] summary::before{transform:rotate(90deg)}
+.beta{font-size:9.5px; text-transform:uppercase; letter-spacing:.05em; background:#1f7d63; color:#fff; padding:1px 5px; border-radius:4px; vertical-align:1px}
+.blist{list-style:none; margin:4px 0 0; padding:0}
+.blist li{padding:5px 0; border-bottom:1px solid var(--line2); font-size:13px}
+.blist li:last-child{border:0}
 .spark{display:flex; align-items:flex-end; gap:3px; height:44px; margin-top:6px}
 .spark .bar{flex:1; background:var(--accent); border-radius:2px 2px 0 0; min-height:2px; opacity:.85}
 .spark .bar:hover{opacity:1}
@@ -158,7 +166,7 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 
 <div class="intro card cardpad">
  <p class="intro-lead">A landscape map of the development-partner ecosystem in Jharkhand — <b>who works where, on what, and where the gaps are</b> — to inform where to add partners, steer funding, and strengthen thin themes.</p>
- <p class="intro-body"><b>How to read it.</b> The map switches between lenses (place health, partner density, theme breadth, CSR, DMF, coverage gap…); click any district for its full profile. Below sit the <b>Ecosystem &amp; Place Health</b> scores, the partner × theme matrix, funders and government spend. <span style="color:#b07a1f">✳ indicative</span> layers (external orgs, funders, DMF) are compiled from public sources and <b>kept out of the health scores</b> unless you toggle them in; the source spreadsheets are the spine. Fully offline &amp; self-contained.</p>
+ <p class="intro-body"><b>How to read it.</b> The map switches between lenses (place health, partner density, theme breadth, CSR, DMF, coverage gap, block presence…); click any district for its full profile. Below sit the <b>Ecosystem &amp; Place Health</b> scores, the partner × theme matrix, funders and government spend. <span style="color:#b07a1f">✳ indicative</span> layers (external orgs, funders, DMF) are compiled from public sources and <b>kept out of the health scores</b> unless you toggle them in; the source spreadsheets are the spine. Fully offline &amp; self-contained.</p>
  <p class="intro-src">Sources: Partners Geography &amp; Thematic focus · TRI Geographic Presence (Jul 2026) · Common Ground block list · Jharkhand CSR (MCA) · boundaries © udit-001/india-maps-data (2011 census). District names &amp; themes normalised; out-of-state / town names kept off the map. See the full <b>Sources</b> section at the bottom.</p>
 </div>
 
@@ -378,8 +386,12 @@ const lenses={
  external:{label:'External orgs ✳',fill:d=>{const c=extCount[d];return c?['#f1f5fa','#e6ddc9','#d8c48f','#c79a4e','#b07a1f'][Math.min(c,4)]:'#f1f5fa';},
    legend:()=>gradLegendC('Other orgs present (indicative)',['#f4efe3','#e6ddc9','#d8c48f','#c79a4e','#b07a1f'],'0 → '+maxExt+'+')},
  dmf:{label:'DMF mining fund ✳',fill:d=>{const v=GOVT_DMF[d]||0;if(!v)return '#f2eef6';const t=v/maxDMF;const p=['#e7dcf0','#c9b0e0','#a97fce','#8a4fbf','#6b2fa0'];return p[Math.min(p.length-1,Math.floor(t*(p.length-1)+0.001))];},
-   legend:()=>gradLegendC('DMF collected ₹Cr (to Mar-2018, CSE)',['#f2eef6','#c9b0e0','#a97fce','#8a4fbf','#6b2fa0'],'0 → ₹'+maxDMF+' Cr')}
+   legend:()=>gradLegendC('DMF collected ₹Cr (to Mar-2018, CSE)',['#f2eef6','#c9b0e0','#a97fce','#8a4fbf','#6b2fa0'],'0 → ₹'+maxDMF+' Cr')},
+ blockcov:{label:'Block presence (beta)',fill:d=>{const n=blockN(d);if(!n)return '#f1f5fa';const p=['#dcefe6','#a6ddc4','#6ec6a4','#3aa987','#1f7d63'];return p[Math.min(p.length-1,Math.ceil(n/Math.max(maxBlk,1)*(p.length-1)))];},
+   legend:()=>gradLegendC('Known block-level presence — CG + TRI only',['#f1f5fa','#a6ddc4','#6ec6a4','#3aa987','#1f7d63'],'0 → '+maxBlk+' block/GP')}
 };
+const blockN=d=>(D[d].blockcov||[]).length;
+const maxBlk=Math.max(1,...CANON.map(blockN));
 function domTheme(d){const f={};PARTNERS.forEach(p=>{if(p.districts.includes(d))p.themes.forEach(t=>f[t]=(f[t]||0)+1);});
  let best=null,bv=0;for(const k in f)if(f[k]>bv){bv=f[k];best=k;}return best;}
 let curLens='placehealth', selD=null;
@@ -471,8 +483,17 @@ function selectDist(name){selD=name;
  else h+='<div class="mini">No mapped partner. '+(v.aspirational?'Aspirational district — whitespace.':'')+'</div>';
  h+='</div>';
  if(v.themes.length){h+='<div class="sec"><div class="t">Themes active</div><div class="chips">'+v.themes.map(t=>'<span class="chip" style="border-left:3px solid '+(themePalette[t]||'#ccc')+'">'+t+'</span>').join('')+'</div></div>';}
- if(v.tri&&v.tri.blocks){h+='<div class="sec"><div class="t">TRI community action lab</div><div class="blk">'+v.tri.blocks+'</div></div>';}
- if(v.cg&&v.cg.blocks){h+='<div class="sec"><div class="t">Common Ground blocks</div><div class="blk">'+v.cg.blocks+'</div></div>';}
+ // block coverage (beta) — count-only; block-level presence known for Common Ground + TRI only
+ const bc=v.blockcov||[];
+ if(bc.length){
+  const srcs=[...new Set(bc.flatMap(b=>b.by))].sort();
+  h+='<div class="sec"><details class="bcov"><summary><b>Block coverage</b> <span class="beta">beta</span> · <b>'+bc.length+'</b> block/GP with known partner presence</summary>';
+  h+='<div class="mini" style="margin:5px 0 8px">Block-level presence known for <b>'+srcs.join(' &amp; ')+'</b> only; the '+PARTNERS.length+' landscape partners are mapped at district level, so this is <b>known presence, not total coverage</b>.</div>';
+  h+='<ul class="blist">';
+  bc.forEach(b=>{h+='<li><b>'+b.name+'</b> '+b.by.map(s=>'<span class="tag">'+s+'</span>').join('')
+    +(b.villages&&b.villages.length?'<br><span class="mini">villages: '+b.villages.join(', ')+'</span>':'')+'</li>';});
+  h+='</ul></details></div>';
+ }
  const ext=extByDist(name);
  if(ext.length){h+='<div class="sec"><div class="t">Other orgs — indicative ✳</div><div class="chips">'+ext.map(o=>'<span class="chip" style="border-left:3px solid #b07a1f">'+o+'</span>').join('')+'</div></div>';}
  if(GOVT_DMF[name]){h+='<div class="sec"><div class="t">DMF mining fund ✳</div><div class="blk">₹'+GOVT_DMF[name]+' Cr collected (cumulative to Mar-2018, CSE) — mining-affected-area fund.</div></div>';}

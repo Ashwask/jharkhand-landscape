@@ -2,22 +2,31 @@
 
 An interactive, fully self-contained (offline, no keys, no CDN) sense-making view of the
 development-partner ecosystem in Jharkhand: **partners × districts × themes**, with TRI
-presence, Common Ground blocks, CSR flow, external organisations, funders and government
-spend — plus **Ecosystem Health** and **Place Health** scorecards.
+presence, Common Ground blocks, block/GP-level coverage, CSR flow, external organisations,
+funders and government spend — plus **Ecosystem Health** and **Place Health** scorecards.
 
 **Live:** https://ashwask.github.io/jharkhand-landscape/
 
 The whole app is a single `index.html` (~200 KB) with the data and the 24-district GeoJSON
 inlined — open it locally or host it anywhere static. `build.py` regenerates it from
-`model.json` + `jh_districts.geojson`.
+`model.json` + `jh_districts.geojson`; `build_blocks.py` regenerates the block/GP coverage
+data in `model.json` from the source spreadsheets.
 
 ## What's inside
 
-**Map — 8 lenses** (inline-SVG choropleth, no map tiles):
+**Map — 9 lenses** (inline-SVG choropleth, no map tiles):
 Partner density · Theme breadth · CSR spend · Dominant theme · Coverage gap ·
-Place health score · External orgs ✳ · DMF mining fund ✳.
-Click any district for a detail panel (partners, themes, TRI/Common Ground blocks, other
-orgs, DMF, place-health score + breakdown, 10-year CSR trend). Hover for a quick readout.
+Place health score · External orgs ✳ · DMF mining fund ✳ · **Block presence (beta)**.
+Click any district for a detail panel (partners, themes, block/GP coverage, other orgs,
+DMF, place-health score + breakdown, 10-year CSR trend). Hover for a quick readout.
+
+**Block coverage (beta)** — an optional per-district view of which blocks/GPs have known
+partner presence, plus the villages where recorded. **Count-only and deliberately partial:**
+block-level presence is known for **Common Ground and TRI only** (39 block/GPs across 13
+districts) — the 12 landscape partners are mapped at district level, so this is *known
+presence, not total coverage*. There is no "X of Y" ratio because the source files carry no
+per-district block/GP totals (denominator); drop in an LGD/Census block-total sheet to
+upgrade it to ratios.
 
 **Scorecards**
 - **Ecosystem Health index** — composite of coverage, aspirational reach, resilience,
@@ -46,6 +55,9 @@ map lens (e.g. `#lens=placehealth`).
 - **✳ indicative** organisations, funders and government figures are compiled from public
   sources (linked in the in-app **Sources** section) and are **kept out of the health
   scores** unless the toggle is on. District attributions are approximate — treat as leads.
+- **Block/GP coverage** reflects only the two sources with block-level resolution (Common
+  Ground, TRI); absence of blocks for a district means "not recorded at block level", not
+  "no partners". It is a count of known presence, never a coverage ratio.
 - Funder ₹ figures, where shown, are **organisation-level** (not Jharkhand-specific).
 - The DMF district split is cumulative to Mar-2018 (CSE); the state total has since grown
   well beyond ₹12,000 Cr.
@@ -66,10 +78,13 @@ District boundaries from [udit-001/india-maps-data](https://github.com/udit-001/
 ## Build / regenerate
 
 ```bash
-python3 build.py    # reads model.json + jh_districts.geojson → writes index.html
+python3 build_blocks.py   # (optional) re-parse the source .xlsx → block/GP coverage in model.json
+python3 build.py          # reads model.json + jh_districts.geojson → writes index.html
 ```
 
-No dependencies beyond Python 3 (stdlib) for the build. The output is dependency-free.
+`build.py` needs only Python 3 (stdlib) and the output is dependency-free. `build_blocks.py`
+additionally needs `openpyxl` and the source spreadsheets present, and only needs re-running
+when the block/GP source data changes.
 
 ## License
 
