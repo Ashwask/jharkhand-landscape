@@ -69,8 +69,9 @@ svg.map{width:100%; height:auto; display:block}
 table{border-collapse:collapse; width:100%; font-size:12.5px}
 .mtx th{font-weight:600; color:var(--ink2); text-align:left; padding:7px 8px; position:sticky; top:0; background:#fff}
 .mtx{padding-top:6px}
-.mtx th.rot{height:104px; white-space:nowrap; vertical-align:bottom; padding:0 0 4px; overflow:visible}
-.mtx th.rot > div{transform:rotate(-45deg); transform-origin:bottom left; width:22px; font-size:11px; line-height:1; font-weight:600}
+.mtx th.rot{vertical-align:bottom; padding:0; text-align:center}
+.mtx th.rot > div{writing-mode:vertical-rl; transform:rotate(180deg); white-space:nowrap; font-size:11px; line-height:1; font-weight:600; margin:0 auto; padding:8px 0 6px; color:var(--ink2)}
+.mtx thead th{border-bottom:2px solid var(--line)}
 .mtx td{text-align:center; padding:0; border:1px solid var(--line2)}
 .mtx td.name{text-align:left; padding:6px 8px; white-space:nowrap; font-weight:500; color:var(--ink)}
 .cell{width:26px; height:26px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:10px; font-weight:700}
