@@ -29,6 +29,8 @@ a{color:var(--accent)}
 .stat .l{color:var(--mut); font-size:11px; margin-top:5px; text-transform:uppercase; letter-spacing:.04em}
 .stat.warn .n{color:var(--accent2)}
 .grid{display:grid; grid-template-columns:1.35fr 1fr; gap:18px; align-items:start}
+.grid.hero{margin-top:20px}
+.grid.hero .card h2{font-size:14px}
 @media(max-width:960px){.grid{grid-template-columns:1fr}}
 .card{background:var(--card); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow)}
 .card h2{font-size:13px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink2); margin:0; padding:14px 16px; border-bottom:1px solid var(--line2)}
@@ -149,14 +151,7 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 <p class="sub">Partners × districts × themes, with TRI presence, Common Ground blocks and CSR flow. Internal sense-making view.</p>
 <p class="prov">Sources: Partners Geography &amp; Thematic focus · TRI Geographic Presence (Jul 2026) · Common Ground block list · Jharkhand CSR data (MCA) · district boundaries © udit-001/india-maps-data (2011 census). District names &amp; themes normalised; some partner rows list out-of-state / town names (kept out of the map).</p>
 
-<div class="strip" id="strip"></div>
-
-<div class="section-title">Ecosystem health</div>
-<p class="section-sub">A funder-facing read on the state of the partner ecosystem — coverage, reach into priority districts, resilience, thematic balance, network depth and how well resources track effort.</p>
-<label class="exttoggle"><input type="checkbox" id="extToggle"> Include <span style="color:#b07a1f">✳ indicative</span> orgs (PRADAN, CInI, CEED…) in the scoring, map &amp; tables</label>
-<div class="card cardpad"><div class="health"><div class="hindex" id="hindex"></div><div class="hcards" id="hcards"></div></div></div>
-
-<div class="grid">
+<div class="grid hero">
  <div class="card">
    <h2>District map</h2>
    <div class="lens" id="lens"></div>
@@ -168,6 +163,13 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
    <div class="cardpad" id="detBody" style="display:none"></div>
  </div>
 </div>
+
+<div class="strip" id="strip"></div>
+
+<div class="section-title">Ecosystem health</div>
+<p class="section-sub">A funder-facing read on the state of the partner ecosystem — coverage, reach into priority districts, resilience, thematic balance, network depth and how well resources track effort.</p>
+<label class="exttoggle"><input type="checkbox" id="extToggle"> Include <span style="color:#b07a1f">✳ indicative</span> orgs (PRADAN, CInI, CEED…) in the scoring, map &amp; tables</label>
+<div class="card cardpad"><div class="health"><div class="hindex" id="hindex"></div><div class="hcards" id="hcards"></div></div></div>
 
 <div class="section-title">Partner × Theme matrix</div>
 <p class="section-sub">Where thematic energy concentrates. <span style="color:#0d6e8c">●</span> teal = source-file partner · <span style="color:#b07a1f">●</span> gold = ✳ indicative org (theme keyword-mapped from its focus). Footer = orgs per theme (source + indicative, with source-only in grey).</p>
