@@ -99,6 +99,9 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 .section-sub{color:var(--mut); font-size:12px; margin:0 0 12px}
 .foot{color:var(--mut); font-size:11px; margin-top:34px; border-top:1px solid var(--line); padding-top:14px}
 .pill{cursor:pointer}
+.exttoggle{display:inline-flex; align-items:center; gap:8px; margin:0 0 12px; padding:8px 13px; border:1px solid var(--line); border-radius:9px; background:#fff; font-size:12.5px; color:var(--ink2); cursor:pointer; box-shadow:var(--shadow)}
+.exttoggle input{width:15px; height:15px; accent-color:var(--gold); cursor:pointer}
+.exttoggle:hover{border-color:var(--gold)}
 /* ecosystem health */
 .health{display:grid; grid-template-columns:1.1fr 2fr; gap:14px}
 @media(max-width:760px){.health{grid-template-columns:1fr}}
@@ -139,6 +142,7 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 
 <div class="section-title">Ecosystem health</div>
 <p class="section-sub">A funder-facing read on the state of the partner ecosystem — coverage, reach into priority districts, resilience, thematic balance, network depth and how well resources track effort.</p>
+<label class="exttoggle"><input type="checkbox" id="extToggle"> Include <span style="color:#b07a1f">✳ indicative</span> orgs (PRADAN, CInI, CEED…) in the scoring, map &amp; tables</label>
 <div class="card cardpad"><div class="health"><div class="hindex" id="hindex"></div><div class="hcards" id="hcards"></div></div></div>
 
 <div class="grid">
@@ -174,7 +178,7 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 <div class="card tbl" id="distbl"></div>
 
 <div class="section-title">Funders &amp; philanthropies present <span style="color:#b07a1f">✳ indicative</span></div>
-<p class="section-sub">Compiled from public sources (BRLF, Azim Premji Foundation, Tata Trusts, EdelGive) — <b>not</b> from the source spreadsheets and <b>not</b> folded into the health scores. Implementing orgs now live in the Partner directory above.</p>
+<p class="section-sub">Compiled from public sources — <b>not</b> from the source spreadsheets and <b>not</b> folded into the health scores. Implementing orgs now live in the Partner directory above. <b>Scale figures are organisation-level</b> (annual giving / CSR / fund size, mostly all-India) — <b>not</b> Jharkhand-specific spend, which funders rarely disclose by state. Read them as relative magnitude, not local outlay.</p>
 <div class="card"><div class="tbl" id="extfund"></div></div>
 
 <div class="section-title">Government spend &amp; allocation <span style="color:#8a4fbf">✳ indicative</span></div>
@@ -207,17 +211,17 @@ const EXT_IMPL=[
  {name:'JSLPS (Govt of Jharkhand)',districts:[],focus:'SHG / livelihoods mission — all 24 districts',src:'https://www.jslps.org/'}
 ];
 const EXT_FUND=[
- {name:'BRLF (Bharat Rural Livelihoods Foundation)',foot:'Grant-in-aid to CSOs across tribal / PVTG districts',src:'https://www.brlf.in/'},
- {name:'Tata Trusts',foot:'Lakhpati Kisan (via CInI + HDFC) — Kolhan tribal belt',src:'https://www.tatatrusts.org/'},
- {name:'Azim Premji Foundation',foot:'Gumla, Ranchi, Simdega — health, education, livelihoods',src:'https://azimpremjifoundation.org/who-we-are/where-we-work/jharkhand/'},
- {name:'HDFC Bank (Parivartan)',foot:'Co-funds Lakhpati Kisan across districts',src:'https://www.tata.com/newsroom/community/tata-trusts-philanthropies-donors-partnerships'},
- {name:'Rainmatter Foundation',foot:'Ecosystem funder — the partners mapped above',src:'https://rainmatter.org/'},
- {name:'EdelGive Foundation (GROW Fund)',foot:'Backs Jharkhand NGOs; co-funders incl. Gates, Rohini Nilekani, A.T.E. Chandra, MacArthur, Rainmatter',src:'https://www.edelgive.org/'},
- {name:'Rohini Nilekani Philanthropies',foot:'Climate & environment, gender, active citizenship',src:'https://rohininilekani.org/'},
- {name:'A.T.E. Chandra Foundation',foot:'NGO institutional strengthening + water bodies',src:''},
- {name:'Bill & Melinda Gates Foundation',foot:'Health & nutrition; GROW Fund core funder',src:''},
- {name:'Tata Steel Foundation',foot:'CSR — 4,500 villages across Kolhan (E./W. Singhbhum, Saraikela)',src:'https://www.tatasteelfoundation.org/'},
- {name:'Corporate CSR (see CSR lens)',foot:'Adani Fdn (Godda) · CCL/Coal India (Ramgarh, Hazaribagh, Bokaro, Chatra, Dhanbad) · NTPC · SBI Fdn',src:''}
+ {name:'BRLF (Bharat Rural Livelihoods Foundation)',foot:'Grant-in-aid to CSOs across tribal / PVTG districts',amt:'₹113 Cr',amtn:'CSO grants to Mar-2021 (+₹2,035 Cr govt leveraged)',src:'https://www.brlf.in/'},
+ {name:'Azim Premji Foundation',foot:'Gumla, Ranchi, Simdega — health, education, livelihoods',amt:'₹1,774 Cr',amtn:'annual giving, all-India (Hurun 2023)',src:'https://azimpremjifoundation.org/who-we-are/where-we-work/jharkhand/'},
+ {name:'HDFC Bank (Parivartan)',foot:'Co-funds Lakhpati Kisan across districts',amt:'₹1,068 Cr',amtn:'total CSR FY2024-25, all-India',src:'https://v.hdfc.bank.in/csr/index.html'},
+ {name:'Rainmatter Foundation',foot:'Ecosystem funder — the partners mapped above',amt:'~₹1,660 Cr',amtn:'$200M committed to climate, all-India',src:'https://rainmatter.org/'},
+ {name:'Tata Steel Foundation',foot:'CSR — 4,500 villages across Kolhan (E./W. Singhbhum, Saraikela)',amt:'₹511 Cr',amtn:'CSR FY2023, Jharkhand + Odisha',src:'https://www.tatasteelfoundation.org/'},
+ {name:'Rohini Nilekani Philanthropies',foot:'Climate & environment, gender, active citizenship',amt:'₹204 Cr',amtn:'2024 giving, all-India',src:'https://rohininilekaniphilanthropies.org/'},
+ {name:'EdelGive Foundation (GROW Fund)',foot:'Backs Jharkhand NGOs; co-funders incl. Gates, Rohini Nilekani, A.T.E. Chandra, MacArthur, Rainmatter',amt:'₹100 Cr',amtn:'GROW Fund size, 100 NGOs pan-India',src:'https://www.edelgive.org/'},
+ {name:'Tata Trusts',foot:'Lakhpati Kisan (via CInI + HDFC) — Kolhan tribal belt',amt:'n/a',amtn:'Jharkhand share not public',src:'https://www.tatatrusts.org/'},
+ {name:'A.T.E. Chandra Foundation',foot:'NGO institutional strengthening + water bodies',amt:'n/a',amtn:'',src:''},
+ {name:'Bill & Melinda Gates Foundation',foot:'Health & nutrition; GROW Fund core funder',amt:'global',amtn:'India programme; JH share n/a',src:''},
+ {name:'Corporate CSR (see CSR lens)',foot:'Adani Fdn (Godda) · CCL/Coal India (Ramgarh, Hazaribagh, Bokaro, Chatra, Dhanbad) · NTPC · SBI Fdn',amt:'see CSR',amtn:'district CSR in the map lens',src:''}
 ];
 /* ---- GOVERNMENT SPEND & ALLOCATION (indicative) ---- */
 const GOVT_DMF={'Dhanbad':715,'Chatra':425.8,'West Singhbhum':424,'Ramgarh':414,'Bokaro':265,'Godda':200}; // ₹Cr cumulative to Mar-2018, CSE
@@ -241,20 +245,43 @@ const themeFreq={}; THEMES.forEach(t=>themeFreq[t]=0);
 PARTNERS.forEach(p=>p.themes.forEach(t=>{if(t in themeFreq)themeFreq[t]++;}));
 const maxTF=Math.max(...Object.values(themeFreq),1);
 
-/* ---------- summary strip ---------- */
-const covered=CANON.filter(d=>D[d].partners.length>0).length;
-const white=CANON.filter(d=>D[d].partners.length===0);
+/* ---------- effective data (toggle: include ✳ indicative orgs in scoring) ---------- */
+let INCLUDE_EXT=false;
+function extThemesOf(focus){const t=focus.toLowerCase();const s=new Set();const has=(...w)=>w.some(x=>t.includes(x));
+ if(has('education','educat'))s.add('Education');
+ if(has('health','nutrition'))s.add('Health & Nutrition');
+ if(has('women','gender','shg'))s.add('Women & Gender');
+ if(has('climate'))s.add('Climate Action');
+ if(has('livelihood','rural dev','community'))s.add('Livelihoods & Rural Dev');
+ if(has('agricultur','farming','horticultur'))s.add('Agriculture');
+ if(has('nrm','natural resource','watershed','forest','water bod'))s.add('Natural Resource Mgmt');
+ if(has('wash','sanitation','drinking water'))s.add('Water & Sanitation');
+ if(has('governance','citizenship'))s.add('Governance');
+ if(has('skill','vocational'))s.add('Skill Development');
+ if(has('energy'))s.add('Clean Energy');
+ if(has('child'))s.add('Child Protection');
+ return [...s];}
+function effPList(d){if(!INCLUDE_EXT)return D[d].partners.slice();const s=new Set(D[d].partners);extByDist(d).forEach(n=>s.add(n));return [...s];}
+function effP(d){return effPList(d).length;}
+function effTList(d){if(!INCLUDE_EXT)return D[d].themes.slice();const s=new Set(D[d].themes);EXT_IMPL.forEach(o=>{if(o.districts.includes(d))extThemesOf(o.focus).forEach(t=>s.add(t));});return [...s];}
+function effT(d){return effTList(d).length;}
+const coveredList=()=>CANON.filter(d=>effP(d)>0);
+const whiteList=()=>CANON.filter(d=>effP(d)===0);
 const csrTot=CANON.reduce((s,d)=>s+(D[d].csr[Y0]||0),0);
-const stats=[
- ['24','Districts'],
- [PARTNERS.length,'Partners mapped'],
- [covered,'Districts covered'],
- [white.length,'Whitespace (0 partners)','warn'],
- [CANON.filter(d=>D[d].aspirational).length,'Aspirational (TRI)'],
- [fmtCr(csrTot),'CSR '+Y0]
-];
-const strip=document.getElementById('strip');
-stats.forEach(s=>{const c=el('div','stat'+(s[2]?' '+s[2]:'')); c.appendChild(el('div','n',s[0])); c.appendChild(el('div','l',s[1])); strip.appendChild(c);});
+
+/* ---------- summary strip ---------- */
+function renderStrip(){const strip=document.getElementById('strip'); strip.innerHTML='';
+ const covered=coveredList().length, white=whiteList().length;
+ const stats=[
+  ['24','Districts'],
+  [INCLUDE_EXT?(PARTNERS.length+EXT_IMPL.length):PARTNERS.length, INCLUDE_EXT?'Orgs (incl. ✳)':'Partners mapped'],
+  [covered,'Districts covered'],
+  [white,'Whitespace (0 orgs)','warn'],
+  [CANON.filter(d=>D[d].aspirational).length,'Aspirational (TRI)'],
+  [fmtCr(csrTot),'CSR '+Y0]
+ ];
+ stats.forEach(s=>{const c=el('div','stat'+(s[2]?' '+s[2]:'')); c.appendChild(el('div','n',s[0])); c.appendChild(el('div','l',s[1])); strip.appendChild(c);});
+}
 
 /* ---------- projection (equirectangular fit) ---------- */
 function bounds(){let mnx=1e9,mny=1e9,mxx=-1e9,mxy=-1e9;
@@ -284,20 +311,20 @@ const themePalette={}; const TP=['#0d6e8c','#c2410c','#4d7c2f','#7c3a86','#b4530
 THEMES.forEach((t,i)=>themePalette[t]=TP[i%TP.length]);
 
 /* ---------- lenses ---------- */
-const maxP=Math.max(...CANON.map(d=>D[d].partners.length));
-const maxCSR=Math.max(...CANON.map(d=>D[d].csr[Y0]||0));
-const maxT=Math.max(...CANON.map(d=>D[d].themes.length));
+let maxP,maxCSR,maxT;
+function refreshScales(){maxP=Math.max(1,...CANON.map(effP));maxCSR=Math.max(...CANON.map(d=>D[d].csr[Y0]||0));maxT=Math.max(1,...CANON.map(effT));}
+refreshScales();
 const lenses={
- partners:{label:'Partner density',fill:d=>seqColor(D[d].partners.length,maxP),
-   legend:()=>gradLegend('# partners',maxP)},
- themes:{label:'Theme breadth',fill:d=>seqColor(D[d].themes.length,maxT),
+ partners:{label:'Partner density',fill:d=>seqColor(effP(d),maxP),
+   legend:()=>gradLegend(INCLUDE_EXT?'# orgs (incl. ✳)':'# partners',maxP)},
+ themes:{label:'Theme breadth',fill:d=>seqColor(effT(d),maxT),
    legend:()=>gradLegend('# themes',maxT)},
  csr:{label:'CSR spend '+Y0,fill:d=>seqColor(D[d].csr[Y0]||0,maxCSR),
    legend:()=>gradLegend('CSR (₹)',maxCSR,true)},
  dom:{label:'Dominant theme',fill:d=>{const t=domTheme(d);return t?themePalette[t]:'#f1f5fa';},
    legend:()=>themeLegend()},
- gap:{label:'Coverage gap',fill:d=>{const v=D[d];if(v.partners.length===0&&v.aspirational)return '#c2410c';
-     if(v.partners.length===0)return '#e79a6a'; if(v.aspirational&&v.partners.length<=1)return '#f0c088'; return '#cfe0d8';},
+ gap:{label:'Coverage gap',fill:d=>{const n=effP(d),a=D[d].aspirational;if(n===0&&a)return '#c2410c';
+     if(n===0)return '#e79a6a'; if(a&&n<=1)return '#f0c088'; return '#cfe0d8';},
    legend:()=>gapLegend()},
  external:{label:'External orgs ✳',fill:d=>{const c=extCount[d];return c?['#f1f5fa','#e6ddc9','#d8c48f','#c79a4e','#b07a1f'][Math.min(c,4)]:'#f1f5fa';},
    legend:()=>gradLegendC('Other orgs present (indicative)',['#f4efe3','#e6ddc9','#d8c48f','#c79a4e','#b07a1f'],'0 → '+maxExt+'+')},
@@ -377,8 +404,8 @@ function selectDist(name){selD=name;
  if(v.aspirational)h+='<span class="badge asp">Aspirational</span> ';
  if(v.tri)h+='<span class="badge tri">TRI</span>';
  h+='</span></div>';
- h+='<div class="kv"><div><div class="k">Partners</div><div class="v">'+v.partners.length+'</div></div>'
-   +'<div><div class="k">Themes</div><div class="v">'+v.themes.length+'</div></div>'
+ h+='<div class="kv"><div><div class="k">'+(INCLUDE_EXT?'Orgs':'Partners')+'</div><div class="v">'+effP(name)+'</div></div>'
+   +'<div><div class="k">Themes</div><div class="v">'+effT(name)+'</div></div>'
    +'<div><div class="k">CSR '+Y0+'</div><div class="v">'+fmtCr(v.csr[Y0]||0)+'</div></div></div>';
  h+='<div class="sec"><div class="t">Partners here</div>';
  if(dp.length){h+='<ul class="plist">';dp.forEach(p=>{h+='<li><b>'+p.name+'</b><br><span class="mini">'+p.themes.join(' · ')+'</span></li>';});h+='</ul>';}
@@ -406,17 +433,16 @@ function buildMatrix(){
  const rows=[...PARTNERS].sort((a,b)=>b.themes.length-a.themes.length);
  let h='<table><thead><tr><th>Partner</th>';
  THEMES.forEach(t=>h+='<th class="rot" title="'+t+'"><div>'+shortT(t)+'</div></th>');
- h+='<th class="tot">n</th></tr></thead><tbody>';
+ h+='</tr></thead><tbody>';
  rows.forEach(p=>{h+='<tr><td class="name">'+p.name+'</td>';
    THEMES.forEach(t=>{const on=p.themes.includes(t);
      const shade=on?0.35+0.65*(themeFreq[t]/maxTF):0;
      const bg=on?'rgba(13,110,140,'+shade.toFixed(2)+')':'#fff';
      h+='<td><div class="cell" style="background:'+bg+'">'+(on?'●':'')+'</div></td>';});
-   h+='<td class="tot">'+p.themes.length+'</td></tr>';});
+   h+='</tr>';});
  // footer totals
  h+='<tr><td class="name" style="font-weight:700">Partners / theme</td>';
  THEMES.forEach(t=>h+='<td class="tot">'+themeFreq[t]+'</td>');
- h+='<td class="tot"></td></tr>';
  h+='</tbody></table>';
  document.getElementById('matrix').innerHTML=h;
 }
@@ -447,8 +473,8 @@ function buildDir(){
 let disSort={k:'partners',asc:false};
 function buildDisTbl(){
  const box=document.getElementById('distbl');
- let rows=CANON.map(d=>({d,partners:D[d].partners.length,themes:D[d].themes.length,
-   asp:D[d].aspirational?1:0,tri:D[d].tri?1:0,csr:D[d].csr[Y0]||0,plist:D[d].partners}));
+ let rows=CANON.map(d=>({d,partners:effP(d),themes:effT(d),
+   asp:D[d].aspirational?1:0,tri:D[d].tri?1:0,csr:D[d].csr[Y0]||0,plist:effPList(d)}));
  rows.sort((a,b)=>{let x=a[disSort.k],y=b[disSort.k];if(typeof x==='string')return disSort.asc?x.localeCompare(y):y.localeCompare(x);return disSort.asc?x-y:y-x;});
  const cols=[['d','District'],['partners','Partners'],['themes','Themes'],['asp','Asp.'],['tri','TRI'],['csr','CSR '+Y0]];
  let h='<table><thead><tr>';cols.forEach(c=>h+='<th data-k="'+c[0]+'"'+(c[0]!=='d'?' class="num"':'')+'>'+c[1]+(disSort.k===c[0]?(disSort.asc?' ▲':' ▼'):'')+'</th>');h+='<th>Who</th></tr></thead><tbody>';
@@ -464,7 +490,7 @@ function buildDisTbl(){
  box.querySelectorAll('.pill').forEach(s=>s.onclick=()=>{selectDist(s.dataset.d);document.getElementById('mapbox').scrollIntoView({behavior:'smooth',block:'center'});});
 }
 
-document.getElementById('foot').innerHTML='Fully self-contained (offline) · '+PARTNERS.length+' partners across '+covered+'/24 districts · Whitespace: <b>'+white.join(', ')+'</b> (all aspirational). Anchors: '+MODEL.anchors.map(a=>a.name).join(', ')+'.';
+function updateFoot(){const wl=whiteList();document.getElementById('foot').innerHTML='Fully self-contained (offline) · '+(INCLUDE_EXT?(PARTNERS.length+EXT_IMPL.length)+' orgs (incl. ✳ indicative)':PARTNERS.length+' source-file partners')+' across '+coveredList().length+'/24 districts · Whitespace: <b>'+(wl.length?wl.join(', '):'none')+'</b>. Anchors: '+MODEL.anchors.map(a=>a.name).join(', ')+'. Scoring '+(INCLUDE_EXT?'<b>includes</b>':'<b>excludes</b>')+' ✳ indicative orgs.';}
 
 /* ---------- ecosystem + place health ---------- */
 const BAND={strong:['#2b8a3e','#e7f3ea','Strong'],mod:['#b45309','#fdf0e2','Moderate'],weak:['#c2410c','#fdece3','Weak']};
@@ -474,23 +500,25 @@ function pearson(xs,ys){const n=xs.length,mx=xs.reduce((a,b)=>a+b,0)/n,my=ys.red
  return (sx&&sy)?c/Math.sqrt(sx*sy):0;}
 
 function buildHealth(){
- const cov=CANON.filter(d=>D[d].partners.length);
+ const cov=coveredList();
  const asp=CANON.filter(d=>D[d].aspirational);
- const aspCov=asp.filter(d=>D[d].partners.length);
- const single=CANON.filter(d=>D[d].partners.length===1);
- const wht=CANON.filter(d=>!D[d].partners.length);
+ const aspCov=asp.filter(d=>effP(d)>0);
+ const single=CANON.filter(d=>effP(d)===1);
+ const wht=whiteList();
  const tf={};THEMES.forEach(t=>tf[t]=0);PARTNERS.forEach(p=>p.themes.forEach(t=>{if(t in tf)tf[t]++;}));
+ if(INCLUDE_EXT)EXT_IMPL.forEach(o=>extThemesOf(o.focus).forEach(t=>{if(t in tf)tf[t]++;}));
  const fragile=THEMES.filter(t=>tf[t]>0&&tf[t]<=2);
- const hubs=CANON.filter(d=>D[d].partners.length>=3);
- const avgP=cov.reduce((s,d)=>s+D[d].partners.length,0)/cov.length;
- const r=pearson(CANON.map(d=>D[d].csr[Y0]||0),CANON.map(d=>D[d].partners.length));
- const csrCov=CANON.reduce((s,d)=>s+(D[d].partners.length?(D[d].csr[Y0]||0):0),0)/csrTot*100;
+ const hubs=CANON.filter(d=>effP(d)>=3);
+ const avgP=cov.reduce((s,d)=>s+effP(d),0)/cov.length;
+ const r=pearson(CANON.map(d=>D[d].csr[Y0]||0),CANON.map(effP));
+ const csrCov=CANON.reduce((s,d)=>s+(effP(d)?(D[d].csr[Y0]||0):0),0)/csrTot*100;
+ const lbl=INCLUDE_EXT?'org':'partner';
  const dims=[
-  {n:'Geographic coverage',v:cov.length+'/24',s:cov.length/24*100,d:Math.round(cov.length/24*100)+'% of districts have ≥1 mapped partner.'},
-  {n:'Aspirational reach',v:aspCov.length+'/'+asp.length,s:aspCov.length/asp.length*100,d:(asp.length-aspCov.length)+' priority districts still unserved: '+asp.filter(d=>!D[d].partners.length).join(', ')+'.'},
-  {n:'Resilience',v:(24-wht.length-single.length)+'/24',s:(24-wht.length-single.length)/24*100,d:single.length+' single-partner + '+wht.length+' zero-partner districts = key-person risk.'},
-  {n:'Thematic balance',v:(THEMES.length-fragile.length)+'/'+THEMES.length,s:(THEMES.length-fragile.length)/THEMES.length*100,d:'Thin themes (≤2 partners): '+fragile.join(', ')+'.'},
-  {n:'Network depth',v:hubs.length+' hubs',s:hubs.length/24*100,d:hubs.length+' districts with ≥3 partners; avg '+avgP.toFixed(1)+' where present.'},
+  {n:'Geographic coverage',v:cov.length+'/24',s:cov.length/24*100,d:Math.round(cov.length/24*100)+'% of districts have ≥1 '+lbl+'.'},
+  {n:'Aspirational reach',v:aspCov.length+'/'+asp.length,s:aspCov.length/asp.length*100,d:(asp.length-aspCov.length)+' priority districts still unserved: '+(asp.filter(d=>!effP(d)).join(', ')||'none')+'.'},
+  {n:'Resilience',v:(24-wht.length-single.length)+'/24',s:(24-wht.length-single.length)/24*100,d:single.length+' single-'+lbl+' + '+wht.length+' zero-'+lbl+' districts = key-person risk.'},
+  {n:'Thematic balance',v:(THEMES.length-fragile.length)+'/'+THEMES.length,s:(THEMES.length-fragile.length)/THEMES.length*100,d:'Thin themes (≤2 '+lbl+'s): '+(fragile.join(', ')||'none')+'.'},
+  {n:'Network depth',v:hubs.length+' hubs',s:hubs.length/24*100,d:hubs.length+' districts with ≥3 '+lbl+'s; avg '+avgP.toFixed(1)+' where present.'},
   {n:'Resource alignment',v:'r = '+r.toFixed(2),s:(r+1)/2*100,d:Math.round(csrCov)+'% of CSR lands in covered districts, but flow barely tracks partner effort — deliberate co-location is untapped.'}
  ];
  const W={0:.15,1:.25,2:.20,3:.15,4:.15,5:.10};
@@ -507,11 +535,11 @@ function buildHealth(){
    +'<div class="d">'+dm.d+'</div></div>';}).join('');
 }
 
-function placeScore(d){const p=D[d].partners.length,t=D[d].themes.length;
+function placeScore(d){const p=effP(d),t=effT(d);
  const sp=Math.min(p/3,1)*45, st=Math.min(t/10,1)*30, sr=(p>=2?1:p===1?.4:0)*25;
  return Math.round(sp+st+sr);}
 function buildPlaceHealth(){
- const rows=CANON.map(d=>{const p=D[d].partners.length,s=placeScore(d),asp=D[d].aspirational;
+ const rows=CANON.map(d=>{const p=effP(d),s=placeScore(d),asp=D[d].aspirational;
   let tag,tc,tb,need;
   if(p===0&&asp){tag='Whitespace';tc='#c2410c';tb='#fdece3';need=0;}
   else if(p===0){tag='Uncovered';tc='#b45309';tb='#fdf0e2';need=1;}
@@ -530,8 +558,8 @@ function buildPlaceHealth(){
 
 function buildExt(){
  const srcLink=s=>s?'<a href="'+s+'" target="_blank" rel="noopener">source ↗</a>':'<span class="mini">public sources</span>';
- let f='<table><thead><tr><th>Funder</th><th>Footprint / instrument</th><th>Ref</th></tr></thead><tbody>';
- EXT_FUND.forEach(o=>{f+='<tr><td><b>'+o.name+'</b></td><td class="mini">'+o.foot+'</td><td class="mini">'+srcLink(o.src)+'</td></tr>';});
+ let f='<table><thead><tr><th>Funder</th><th>Scale ₹ Cr <span class="mini">✳ org-level</span></th><th>Footprint / instrument</th><th>Ref</th></tr></thead><tbody>';
+ EXT_FUND.forEach(o=>{f+='<tr><td><b>'+o.name+'</b></td><td><b>'+(o.amt||'—')+'</b>'+(o.amtn?'<br><span class="mini">'+o.amtn+'</span>':'')+'</td><td class="mini">'+o.foot+'</td><td class="mini">'+srcLink(o.src)+'</td></tr>';});
  f+='</tbody></table>'; document.getElementById('extfund').innerHTML=f;
 }
 
@@ -547,7 +575,14 @@ function buildGovt(){
  s+='</tbody></table>'; document.getElementById('govtsch').innerHTML=s;
 }
 
-paint(); buildHealth(); buildMatrix(); buildPlaceHealth(); buildDir(); buildDisTbl(); buildExt(); buildGovt();
+/* toggle-dependent surfaces */
+function renderScored(){refreshScales(); renderStrip(); paint(); buildHealth(); buildPlaceHealth(); buildDisTbl(); updateFoot(); if(selD)selectDist(selD);}
+document.getElementById('extToggle').addEventListener('change',e=>{INCLUDE_EXT=e.target.checked; renderScored();});
+
+/* initial render */
+renderStrip(); paint(); buildHealth(); buildMatrix(); buildPlaceHealth(); buildDir(); buildDisTbl(); updateFoot(); buildExt(); buildGovt();
+/* deep-link: #ext opens with indicative scoring on */
+if(location.hash.toLowerCase().includes('ext')){const t=document.getElementById('extToggle');t.checked=true;INCLUDE_EXT=true;renderScored();}
 </script></body></html>'''
 
 HTML = HTML.replace('__MODEL__', MODEL).replace('__GEO__', GEO)
