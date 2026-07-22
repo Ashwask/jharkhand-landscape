@@ -173,6 +173,13 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 <p class="section-sub">The full grid: partners, themes, aspirational status (per TRI), TRI presence and latest-year CSR.</p>
 <div class="card tbl" id="distbl"></div>
 
+<div class="section-title">Wider ecosystem — other organisations &amp; funders <span style="color:#b07a1f">✳ indicative</span></div>
+<p class="section-sub">Compiled from public sources (org sites, BRLF, Azim Premji Foundation, Tata Trusts) — <b>not</b> from the source spreadsheets and <b>not</b> folded into the health scores above. District attributions are approximate; treat as leads to verify. See the <b>“External orgs ✳”</b> map lens.</p>
+<div class="grid">
+ <div class="card"><h2>Other implementing organisations</h2><div class="tbl" id="extimpl"></div></div>
+ <div class="card"><h2>Funders &amp; philanthropies present</h2><div class="tbl" id="extfund"></div></div>
+</div>
+
 <div class="foot" id="foot"></div>
 </div>
 
@@ -181,6 +188,28 @@ const MODEL=__MODEL__;
 const GEO=__GEO__;
 const D=MODEL.districts, CANON=MODEL.canon, THEMES=MODEL.themes, YEARS=MODEL.years, PARTNERS=MODEL.partners;
 const Y0=YEARS[0];
+/* ---- WIDER ECOSYSTEM: external to the source files, compiled from public sources (INDICATIVE) ---- */
+const EXT_IMPL=[
+ {name:'PRADAN',districts:['Khunti','Gumla','Godda','Hazaribagh','Dumka','Koderma','Ranchi','West Singhbhum'],focus:'Livelihoods · Women/SHGs · NRM',src:'https://www.pradan.net/'},
+ {name:'CInI (Tata Trusts)',districts:['West Singhbhum','East Singhbhum','Saraikela-Kharsawan','Khunti','Gumla','Simdega'],focus:'Agriculture · forest livelihoods · water',src:'https://cinicell.org/'},
+ {name:'Vikas Bharti Bishunpur',districts:['Gumla'],focus:'NRM · health · education · KVK (HQ Gumla, projects statewide)',src:'https://www.vikasbharti.in/'},
+ {name:'Ekjut',districts:['West Singhbhum','Saraikela-Kharsawan'],focus:'Maternal & newborn health (participatory learning)',src:''},
+ {name:'CINI (Child In Need Institute)',districts:['Ranchi'],focus:'Child health & nutrition (+ statewide)',src:''},
+ {name:'NEEDS',districts:['Deoghar','Dumka','Godda'],focus:'WASH · livelihoods (Santhal Pargana)',src:''},
+ {name:'JSLPS (Govt of Jharkhand)',districts:[],focus:'SHG / livelihoods mission — all 24 districts',src:'https://www.jslps.org/'}
+];
+const EXT_FUND=[
+ {name:'BRLF (Bharat Rural Livelihoods Foundation)',foot:'Grant-in-aid to CSOs across tribal / PVTG districts',src:'https://www.brlf.in/'},
+ {name:'Tata Trusts',foot:'Lakhpati Kisan (via CInI + HDFC) — Kolhan tribal belt',src:'https://www.tatatrusts.org/'},
+ {name:'Azim Premji Foundation',foot:'Gumla, Ranchi, Simdega — health, education, livelihoods',src:'https://azimpremjifoundation.org/who-we-are/where-we-work/jharkhand/'},
+ {name:'HDFC Bank (Parivartan)',foot:'Co-funds Lakhpati Kisan across districts',src:'https://www.tata.com/newsroom/community/tata-trusts-philanthropies-donors-partnerships'},
+ {name:'Rainmatter Foundation',foot:'Ecosystem funder — the partners mapped above',src:'https://rainmatter.org/'},
+ {name:'Corporate CSR (see CSR lens)',foot:'Tata Steel Fdn (E./W. Singhbhum, Saraikela) · Adani Fdn (Godda) · CCL/Coal India (Ramgarh, Hazaribagh, Bokaro, Chatra, Dhanbad) · NTPC · SBI Fdn',src:''}
+];
+const extCount={}; CANON.forEach(d=>extCount[d]=0);
+EXT_IMPL.forEach(o=>o.districts.forEach(d=>{if(d in extCount)extCount[d]++;}));
+const maxExt=Math.max(...Object.values(extCount),1);
+const extByDist=d=>EXT_IMPL.filter(o=>o.districts.includes(d)).map(o=>o.name);
 const fmtCr=v=>'₹'+(v/1e7).toFixed(v/1e7<10?1:0)+' Cr';
 const el=(t,c,h)=>{const e=document.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e;};
 
@@ -246,7 +275,9 @@ const lenses={
    legend:()=>themeLegend()},
  gap:{label:'Coverage gap',fill:d=>{const v=D[d];if(v.partners.length===0&&v.aspirational)return '#c2410c';
      if(v.partners.length===0)return '#e79a6a'; if(v.aspirational&&v.partners.length<=1)return '#f0c088'; return '#cfe0d8';},
-   legend:()=>gapLegend()}
+   legend:()=>gapLegend()},
+ external:{label:'External orgs ✳',fill:d=>{const c=extCount[d];return c?['#f1f5fa','#e6ddc9','#d8c48f','#c79a4e','#b07a1f'][Math.min(c,4)]:'#f1f5fa';},
+   legend:()=>gradLegendC('Other orgs present (indicative)',['#f4efe3','#e6ddc9','#d8c48f','#c79a4e','#b07a1f'],'0 → '+maxExt+'+')}
 };
 function domTheme(d){const f={};PARTNERS.forEach(p=>{if(p.districts.includes(d))p.themes.forEach(t=>f[t]=(f[t]||0)+1);});
  let best=null,bv=0;for(const k in f)if(f[k]>bv){bv=f[k];best=k;}return best;}
@@ -259,6 +290,11 @@ function gradLegend(title,max,money){const w=el('div');w.appendChild(el('span','
  w.appendChild(grad);
  w.appendChild(el('span','',money?('0 → '+fmtCr(max)):('0 → '+max)));
  w.style.cssText='display:flex;align-items:center;gap:8px;flex-wrap:wrap';return w;}
+function gradLegendC(title,cols,rng){const w=el('div');w.style.cssText='display:flex;align-items:center;gap:8px;flex-wrap:wrap';
+ w.appendChild(el('span','legtitle',title));
+ const grad=el('div'); grad.style.cssText='display:flex;gap:0;border-radius:4px;overflow:hidden';
+ cols.forEach(c=>{const b=el('div');b.style.cssText='width:24px;height:12px;background:'+c;grad.appendChild(b);});
+ w.appendChild(grad); w.appendChild(el('span','',rng)); return w;}
 function themeLegend(){const w=el('div');w.style.cssText='display:flex;gap:10px;flex-wrap:wrap';
  const used=[...new Set(CANON.map(domTheme).filter(Boolean))];
  used.forEach(t=>{const s=el('span','sw');const b=el('span','box');b.style.background=themePalette[t];s.appendChild(b);s.appendChild(el('span','',t));w.appendChild(s);});return w;}
@@ -326,6 +362,8 @@ function selectDist(name){selD=name;
  if(v.themes.length){h+='<div class="sec"><div class="t">Themes active</div><div class="chips">'+v.themes.map(t=>'<span class="chip" style="border-left:3px solid '+(themePalette[t]||'#ccc')+'">'+t+'</span>').join('')+'</div></div>';}
  if(v.tri&&v.tri.blocks){h+='<div class="sec"><div class="t">TRI community action lab</div><div class="blk">'+v.tri.blocks+'</div></div>';}
  if(v.cg&&v.cg.blocks){h+='<div class="sec"><div class="t">Common Ground blocks</div><div class="blk">'+v.cg.blocks+'</div></div>';}
+ const ext=extByDist(name);
+ if(ext.length){h+='<div class="sec"><div class="t">Other orgs — indicative ✳</div><div class="chips">'+ext.map(o=>'<span class="chip" style="border-left:3px solid #b07a1f">'+o+'</span>').join('')+'</div></div>';}
  // CSR sparkline
  const yr=[...YEARS].reverse(); const vals=yr.map(y=>v.csr[y]||0); const mx=Math.max(...vals,1);
  h+='<div class="sec"><div class="t">CSR spend trend (₹ Cr)</div><div class="spark">';
@@ -459,7 +497,20 @@ function buildPlaceHealth(){
  document.querySelectorAll('#placehealth .pn').forEach(s=>s.onclick=()=>{selectDist(s.dataset.d);document.getElementById('mapbox').scrollIntoView({behavior:'smooth',block:'center'});});
 }
 
-paint(); buildHealth(); buildMatrix(); buildPlaceHealth(); buildDir(); buildDisTbl();
+function buildExt(){
+ const srcLink=s=>s?'<a href="'+s+'" target="_blank" rel="noopener">source ↗</a>':'<span class="mini">public sources</span>';
+ let h='<table><thead><tr><th>Organisation</th><th>Indicative districts</th><th>Focus</th><th>Ref</th></tr></thead><tbody>';
+ EXT_IMPL.forEach(o=>{h+='<tr><td><b>'+o.name+'</b></td><td>'+
+   (o.districts.length?o.districts.map(d=>'<span class="tag pill" data-d="'+d+'">'+d.replace('-Kharsawan','-K.')+'</span>').join(''):'<span class="tag">Statewide</span>')+
+   '</td><td class="mini">'+o.focus+'</td><td class="mini">'+srcLink(o.src)+'</td></tr>';});
+ h+='</tbody></table>'; const box=document.getElementById('extimpl'); box.innerHTML=h;
+ box.querySelectorAll('.pill').forEach(s=>s.onclick=()=>{selectDist(s.dataset.d);document.getElementById('mapbox').scrollIntoView({behavior:'smooth',block:'center'});});
+ let f='<table><thead><tr><th>Funder</th><th>Footprint / instrument</th><th>Ref</th></tr></thead><tbody>';
+ EXT_FUND.forEach(o=>{f+='<tr><td><b>'+o.name+'</b></td><td class="mini">'+o.foot+'</td><td class="mini">'+srcLink(o.src)+'</td></tr>';});
+ f+='</tbody></table>'; document.getElementById('extfund').innerHTML=f;
+}
+
+paint(); buildHealth(); buildMatrix(); buildPlaceHealth(); buildDir(); buildDisTbl(); buildExt();
 </script></body></html>'''
 
 HTML = HTML.replace('__MODEL__', MODEL).replace('__GEO__', GEO)
