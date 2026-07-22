@@ -172,7 +172,7 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 <div class="card tbl" id="distbl"></div>
 
 <div class="section-title">Funders &amp; philanthropies present <span style="color:#b07a1f">✳ indicative</span></div>
-<p class="section-sub">Compiled from public sources — <b>not</b> from the source spreadsheets and <b>not</b> folded into the health scores. Implementing orgs now live in the Partner directory above. <b>Scale figures are organisation-level</b> (annual giving / CSR / fund size, mostly all-India) — <b>not</b> Jharkhand-specific spend, which funders rarely disclose by state. Read them as relative magnitude, not local outlay.</p>
+<p class="section-sub">Who funds whom in Jharkhand. The <b>“Supports in Jharkhand”</b> column links each funder to the implementing org(s) it backs here (gold tags match the Partner directory); where a funder's local grantees aren't public, that's stated plainly. <b>Scale ₹ Cr is organisation-level</b> (annual giving / CSR / fund size, mostly all-India) — <b>not</b> Jharkhand-specific spend, which funders rarely disclose by state; read it as relative magnitude only. Compiled from public sources, kept out of the health scores.</p>
 <div class="card"><div class="tbl" id="extfund"></div></div>
 
 <div class="section-title">Government spend &amp; allocation <span style="color:#8a4fbf">✳ indicative</span></div>
@@ -205,17 +205,17 @@ const EXT_IMPL=[
  {name:'JSLPS (Govt of Jharkhand)',districts:[],focus:'SHG / livelihoods mission — all 24 districts',src:'https://www.jslps.org/'}
 ];
 const EXT_FUND=[
- {name:'BRLF (Bharat Rural Livelihoods Foundation)',foot:'Grant-in-aid to CSOs across tribal / PVTG districts',amt:'₹113 Cr',amtn:'CSO grants to Mar-2021 (+₹2,035 Cr govt leveraged)',src:'https://www.brlf.in/'},
- {name:'Azim Premji Foundation',foot:'Gumla, Ranchi, Simdega — health, education, livelihoods',amt:'₹1,774 Cr',amtn:'annual giving, all-India (Hurun 2023)',src:'https://azimpremjifoundation.org/who-we-are/where-we-work/jharkhand/'},
- {name:'HDFC Bank (Parivartan)',foot:'Co-funds Lakhpati Kisan across districts',amt:'₹1,068 Cr',amtn:'total CSR FY2024-25, all-India',src:'https://v.hdfc.bank.in/csr/index.html'},
- {name:'Rainmatter Foundation',foot:'Ecosystem funder — the partners mapped above',amt:'~₹1,660 Cr',amtn:'$200M committed to climate, all-India',src:'https://rainmatter.org/'},
- {name:'Tata Steel Foundation',foot:'CSR — 4,500 villages across Kolhan (E./W. Singhbhum, Saraikela)',amt:'₹511 Cr',amtn:'CSR FY2023, Jharkhand + Odisha',src:'https://www.tatasteelfoundation.org/'},
- {name:'Rohini Nilekani Philanthropies',foot:'Climate & environment, gender, active citizenship',amt:'₹204 Cr',amtn:'2024 giving, all-India',src:'https://rohininilekaniphilanthropies.org/'},
- {name:'EdelGive Foundation (GROW Fund)',foot:'Backs Jharkhand NGOs; co-funders incl. Gates, Rohini Nilekani, A.T.E. Chandra, MacArthur, Rainmatter',amt:'₹100 Cr',amtn:'GROW Fund size, 100 NGOs pan-India',src:'https://www.edelgive.org/'},
- {name:'Tata Trusts',foot:'Lakhpati Kisan (via CInI + HDFC) — Kolhan tribal belt',amt:'n/a',amtn:'Jharkhand share not public',src:'https://www.tatatrusts.org/'},
- {name:'A.T.E. Chandra Foundation',foot:'NGO institutional strengthening + water bodies',amt:'n/a',amtn:'',src:''},
- {name:'Bill & Melinda Gates Foundation',foot:'Health & nutrition; GROW Fund core funder',amt:'global',amtn:'India programme; JH share n/a',src:''},
- {name:'Corporate CSR (see CSR lens)',foot:'Adani Fdn (Godda) · CCL/Coal India (Ramgarh, Hazaribagh, Bokaro, Chatra, Dhanbad) · NTPC · SBI Fdn',amt:'see CSR',amtn:'district CSR in the map lens',src:''}
+ {name:'BRLF (Bharat Rural Livelihoods Foundation)',orgs:[],supports:'57 tribal/PVTG-district CSOs across 10 states — JH grantee names not public',amt:'₹113 Cr',amtn:'CSO grants to Mar-2021',src:'https://www.brlf.in/cso-partners/'},
+ {name:'Tata Trusts',orgs:['CInI (Tata Trusts)'],supports:'CInI (associate org) — Lakhpati Kisan, Kolhan',amt:'n/a',amtn:'JH share not public',src:'https://www.tatatrusts.org/'},
+ {name:'HDFC Bank (Parivartan)',orgs:['CInI (Tata Trusts)'],supports:'CInI — co-funds Lakhpati Kisan',amt:'₹1,068 Cr',amtn:'total CSR FY2024-25, all-India',src:'https://v.hdfc.bank.in/csr/index.html'},
+ {name:'Azim Premji Foundation',orgs:['PHIA'],supports:'PHIA + own field ops (Gumla, Ranchi, Simdega); early-stage CSO grants',amt:'₹1,774 Cr',amtn:'annual giving, all-India (Hurun 2023)',src:'https://phia.org.in/partner/azim-premji-foundation/'},
+ {name:'Rainmatter Foundation',orgs:[],supports:'Source-file partners on this board (ecosystem funder)',amt:'~₹1,660 Cr',amtn:'$200M committed to climate, all-India',src:'https://rainmatter.org/'},
+ {name:'Tata Steel Foundation',orgs:[],supports:'Direct ops — 4,500 villages across Kolhan (+ local partners)',amt:'₹511 Cr',amtn:'CSR FY2023, Jharkhand + Odisha',src:'https://www.tatasteelfoundation.org/'},
+ {name:'EdelGive Foundation (GROW Fund)',orgs:[],supports:'GROW-cohort Jharkhand NGOs (names not individually public)',amt:'₹100 Cr',amtn:'GROW Fund size, 100 NGOs pan-India',src:'https://www.edelgive.org/'},
+ {name:'Rohini Nilekani Philanthropies',orgs:[],supports:'Jharkhand NGOs via EdelGive GROW; direct grants',amt:'₹204 Cr',amtn:'2024 giving, all-India',src:'https://rohininilekaniphilanthropies.org/'},
+ {name:'A.T.E. Chandra Foundation',orgs:[],supports:'Jharkhand NGOs via EdelGive GROW',amt:'n/a',amtn:'',src:''},
+ {name:'Bill & Melinda Gates Foundation',orgs:[],supports:'Health/nutrition via EdelGive GROW & partners',amt:'global',amtn:'India programme; JH share n/a',src:''},
+ {name:'Corporate CSR (see CSR lens)',orgs:[],supports:'Direct district CSR — Adani (Godda) · CCL/Coal India (coal belt) · NTPC · SBI',amt:'see CSR',amtn:'district CSR in the map lens',src:''}
 ];
 /* ---- GOVERNMENT SPEND & ALLOCATION (indicative) ---- */
 const GOVT_DMF={'Dhanbad':715,'Chatra':425.8,'West Singhbhum':424,'Ramgarh':414,'Bokaro':265,'Godda':200}; // ₹Cr cumulative to Mar-2018, CSE
@@ -552,8 +552,13 @@ function buildPlaceHealth(){
 
 function buildExt(){
  const srcLink=s=>s?'<a href="'+s+'" target="_blank" rel="noopener">source ↗</a>':'<span class="mini">public sources</span>';
- let f='<table><thead><tr><th>Funder</th><th>Scale ₹ Cr <span class="mini">✳ org-level</span></th><th>Footprint / instrument</th><th>Ref</th></tr></thead><tbody>';
- EXT_FUND.forEach(o=>{f+='<tr><td><b>'+o.name+'</b></td><td><b>'+(o.amt||'—')+'</b>'+(o.amtn?'<br><span class="mini">'+o.amtn+'</span>':'')+'</td><td class="mini">'+o.foot+'</td><td class="mini">'+srcLink(o.src)+'</td></tr>';});
+ let f='<table><thead><tr><th>Funder</th><th>Supports in Jharkhand</th><th>Scale ₹ Cr <span class="mini">✳ org-level</span></th><th>Ref</th></tr></thead><tbody>';
+ EXT_FUND.forEach(o=>{
+   const orgTags=(o.orgs&&o.orgs.length)?o.orgs.map(n=>'<span class="tag" style="border-left:3px solid #b07a1f">'+n+'</span>').join(' '):'';
+   f+='<tr><td><b>'+o.name+'</b></td>'
+    +'<td>'+orgTags+(orgTags?'<br>':'')+'<span class="mini">'+o.supports+'</span></td>'
+    +'<td><b>'+(o.amt||'—')+'</b>'+(o.amtn?'<br><span class="mini">'+o.amtn+'</span>':'')+'</td>'
+    +'<td class="mini">'+srcLink(o.src)+'</td></tr>';});
  f+='</tbody></table>'; document.getElementById('extfund').innerHTML=f;
 }
 
