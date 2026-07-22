@@ -68,8 +68,9 @@ svg.map{width:100%; height:auto; display:block}
 .mtx{overflow-x:auto}
 table{border-collapse:collapse; width:100%; font-size:12.5px}
 .mtx th{font-weight:600; color:var(--ink2); text-align:left; padding:7px 8px; position:sticky; top:0; background:#fff}
-.mtx th.rot{height:96px; white-space:nowrap; vertical-align:bottom; padding-bottom:8px}
-.mtx th.rot > div{transform:rotate(-52deg); transform-origin:left; width:20px; font-size:11px}
+.mtx{padding-top:6px}
+.mtx th.rot{height:104px; white-space:nowrap; vertical-align:bottom; padding:0 0 4px; overflow:visible}
+.mtx th.rot > div{transform:rotate(-45deg); transform-origin:bottom left; width:22px; font-size:11px; line-height:1; font-weight:600}
 .mtx td{text-align:center; padding:0; border:1px solid var(--line2)}
 .mtx td.name{text-align:left; padding:6px 8px; white-space:nowrap; font-weight:500; color:var(--ink)}
 .cell{width:26px; height:26px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:10px; font-weight:700}
@@ -326,10 +327,12 @@ function selectDist(name){selD=name;
 }
 
 /* ---------- matrix ---------- */
+const THSHORT={'Health & Nutrition':'Health','Women & Gender':'Women','Climate Action':'Climate','Livelihoods & Rural Dev':'Livelihoods','Natural Resource Mgmt':'NRM','Water & Sanitation':'WASH','Skill Development':'Skills','Clean Energy':'Energy','Child Protection':'Child Prot.'};
+const shortT=t=>THSHORT[t]||t;
 function buildMatrix(){
  const rows=[...PARTNERS].sort((a,b)=>b.themes.length-a.themes.length);
  let h='<table><thead><tr><th>Partner</th>';
- THEMES.forEach(t=>h+='<th class="rot"><div>'+t+'</div></th>');
+ THEMES.forEach(t=>h+='<th class="rot" title="'+t+'"><div>'+shortT(t)+'</div></th>');
  h+='<th class="tot">n</th></tr></thead><tbody>';
  rows.forEach(p=>{h+='<tr><td class="name">'+p.name+'</td>';
    THEMES.forEach(t=>{const on=p.themes.includes(t);
