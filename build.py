@@ -159,7 +159,7 @@ table{border-collapse:collapse; width:100%; font-size:12.5px}
 </div>
 
 <div class="section-title">Partner × Theme matrix</div>
-<p class="section-sub">Where thematic energy concentrates. Cell = 1 if the partner works on that theme; darker = the theme is carried by more partners overall.</p>
+<p class="section-sub">Where thematic energy concentrates. <span style="color:#0d6e8c">●</span> teal = source-file partner · <span style="color:#b07a1f">●</span> gold = ✳ indicative org (theme keyword-mapped from its focus). Footer = orgs per theme (source + indicative, with source-only in grey).</p>
 <div class="card cardpad mtx" id="matrix"></div>
 
 <div class="section-title">Partner directory</div>
@@ -430,19 +430,24 @@ function selectDist(name){selD=name;
 const THSHORT={'Health & Nutrition':'Health','Women & Gender':'Women','Climate Action':'Climate','Livelihoods & Rural Dev':'Livelihoods','Natural Resource Mgmt':'NRM','Water & Sanitation':'WASH','Skill Development':'Skills','Clean Energy':'Energy','Child Protection':'Child Ptn'};
 const shortT=t=>THSHORT[t]||t;
 function buildMatrix(){
- const rows=[...PARTNERS].sort((a,b)=>b.themes.length-a.themes.length);
+ const src=PARTNERS.map(p=>({name:p.name,themes:p.themes,ext:false}));
+ const ext=EXT_IMPL.map(o=>({name:o.name,themes:extThemesOf(o.focus),ext:true}));
+ const rows=src.concat(ext).sort((a,b)=>b.themes.length-a.themes.length);
+ // combined totals per theme (source + indicative)
+ const totAll={},totSrc={}; THEMES.forEach(t=>{totSrc[t]=themeFreq[t];totAll[t]=0;});
+ rows.forEach(r=>r.themes.forEach(t=>{if(t in totAll)totAll[t]++;}));
  let h='<table><thead><tr><th>Partner</th>';
  THEMES.forEach(t=>h+='<th class="rot" title="'+t+'"><div>'+shortT(t)+'</div></th>');
  h+='</tr></thead><tbody>';
- rows.forEach(p=>{h+='<tr><td class="name">'+p.name+'</td>';
+ rows.forEach(p=>{h+='<tr'+(p.ext?' style="background:#fcfaf5"':'')+'><td class="name">'+p.name+(p.ext?' <span class="tag" style="background:#f4efe3;color:#b07a1f;border-color:#e6d9bf;font-size:9px;padding:0 5px">✳</span>':'')+'</td>';
    THEMES.forEach(t=>{const on=p.themes.includes(t);
-     const shade=on?0.35+0.65*(themeFreq[t]/maxTF):0;
-     const bg=on?'rgba(13,110,140,'+shade.toFixed(2)+')':'#fff';
-     h+='<td><div class="cell" style="background:'+bg+'">'+(on?'●':'')+'</div></td>';});
+     let bg='#fff',dot='';
+     if(on){ if(p.ext){bg='rgba(176,122,31,0.55)';} else {const shade=0.35+0.65*(themeFreq[t]/maxTF);bg='rgba(13,110,140,'+shade.toFixed(2)+')';} dot='●'; }
+     h+='<td><div class="cell" style="background:'+bg+'">'+dot+'</div></td>';});
    h+='</tr>';});
- // footer totals
- h+='<tr><td class="name" style="font-weight:700">Partners / theme</td>';
- THEMES.forEach(t=>h+='<td class="tot">'+themeFreq[t]+'</td>');
+ // footer totals (source + indicative)
+ h+='<tr><td class="name" style="font-weight:700">Orgs / theme <span class="mini">(src + ✳)</span></td>';
+ THEMES.forEach(t=>h+='<td class="tot">'+totAll[t]+'<br><span class="mini" style="font-weight:400">'+totSrc[t]+'</span></td>');
  h+='</tbody></table>';
  document.getElementById('matrix').innerHTML=h;
 }
